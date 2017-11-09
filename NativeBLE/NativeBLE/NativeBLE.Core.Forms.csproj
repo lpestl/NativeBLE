@@ -8,8 +8,8 @@
     <ProjectGuid>{3E9D4422-CC16-4C2E-BA53-A559423E19EE}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NativeBLE</RootNamespace>
-    <AssemblyName>NativeBLE</AssemblyName>
+    <RootNamespace>NativeBLE.Core</RootNamespace>
+    <AssemblyName>NativeBLE.Core.Forms</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Profile111</TargetFrameworkProfile>

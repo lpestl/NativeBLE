@@ -139,9 +139,9 @@
     <AndroidResource Include="Resources\values\styles.xml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\NativeBLE\NativeBLE.csproj">
-      <Project>{40a336cb-971e-4dcb-a4d1-e07943bca908}</Project>
-      <Name>NativeBLE</Name>
+    <ProjectReference Include="..\NativeBLE\NativeBLE.Core.Forms.csproj">
+      <Project>{3E9D4422-CC16-4C2E-BA53-A559423E19EE}</Project>
+      <Name>NativeBLE.Core.Forms</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
