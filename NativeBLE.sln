@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27004.2008
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NativeBLE.Android", "NativeBLE\NativeBLE.Android\NativeBLE.Android.csproj", "{82351901-60A3-4859-BBFD-C0043D7FDCBD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NativeBLE.Droid", "NativeBLE\NativeBLE.Android\NativeBLE.Droid.csproj", "{82351901-60A3-4859-BBFD-C0043D7FDCBD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NativeBLE.Core.Forms", "NativeBLE\NativeBLE\NativeBLE.Core.Forms.csproj", "{3E9D4422-CC16-4C2E-BA53-A559423E19EE}"
 	ProjectSection(ProjectDependencies) = postProject

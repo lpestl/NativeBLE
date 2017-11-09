@@ -5,7 +5,7 @@ using System.Text;
 
 using Xamarin.Forms;
 
-namespace NativeBLE
+namespace NativeBLE.Core
 {
     public partial class App : Application
     {
@@ -13,7 +13,7 @@ namespace NativeBLE
         {
             InitializeComponent();
 
-            MainPage = new NativeBLE.MainPage();
+            MainPage = new NativeBLE.Core.Forms.MainPage();
         }
 
         protected override void OnStart()
