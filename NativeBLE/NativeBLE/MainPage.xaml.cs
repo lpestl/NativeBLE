@@ -40,7 +40,6 @@ namespace NativeBLE.Core.Forms
                 deviceScanner.GetRuntimePermissions();
 
             deviceScanner.GetBluetoothAdapter();
-            //deviceScanner.ScanLeDevice();
         }
 
         private void OnClick(object sender, EventArgs e)
@@ -56,11 +55,5 @@ namespace NativeBLE.Core.Forms
                 IsBusy = true;
             }
         }
-
-        //private void phonesList_ItemSelected(object sender, SelectedItemChangedEventArgs e)
-        //{
-        //    if (e.SelectedItem != null)
-        //        selected.Text = e.SelectedItem.ToString();
-        //}
     }
 }

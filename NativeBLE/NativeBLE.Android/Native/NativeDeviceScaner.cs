@@ -24,12 +24,8 @@ namespace NativeBLE.Droid.Native
 {
     class NativeDeviceScanner : ScanCallback, IDeviceScanner
     {
-        //private LeDeviceListAdapter mLeDeviceListAdapter;
-        //private DevicesListViewModel mDevicesListViewModel;
         private BluetoothAdapter mBluetoothAdapter;
-        //private BluetoothLeScanner mBluetoothLeScanner;
 
-        //private bool mScanning = false;
         private Handler mHandler;
 
         private static int REQUEST_ENABLE_BT = 1;
@@ -41,22 +37,17 @@ namespace NativeBLE.Droid.Native
 
         private Activity mThisActivity;
         private Logger logger;
-
-        //public bool Scanning { get; set; }
+        
         public MainPageViewModel pageViewModel { get; set; }
-
-        //public IntPtr Handle => throw new NotImplementedException();
 
         public NativeDeviceScanner()
         {
             logger = new Logger();
             logger.TAG = "NativeDeviceScanner";
             logger.LogInfo("NativeDeviceScanner constructor");
-
-            //pageViewModel.Scanning = false;
+            
             mHandler = new Handler();
             mThisActivity = Xamarin.Forms.Forms.Context as Activity;
-            //mLeDeviceListAdapter = new LeDeviceListAdapter();
         }
 
         public bool CheckPermissions()
@@ -103,7 +94,7 @@ namespace NativeBLE.Droid.Native
         {
             logger.LogInfo("Get bluetooth Adapter");
             BluetoothManager bluetoothManager = mThisActivity.GetSystemService(Context.BluetoothService) as BluetoothManager;
-            mBluetoothAdapter = bluetoothManager.Adapter;// .GetAdapter();
+            mBluetoothAdapter = bluetoothManager.Adapter;
             if (mBluetoothAdapter != null)
             {
                 if (!mBluetoothAdapter.IsEnabled)
@@ -112,9 +103,7 @@ namespace NativeBLE.Droid.Native
 
                     Intent enableBtIntent = new Intent(BluetoothAdapter.ActionRequestEnable);
                     mThisActivity.StartActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
-
-                    //Intent enableBtIntent = new Intent(BluetoothAdapter.ActionRequestEnable);
-                    //mThisActivity.StartActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+                    
                     //mBluetoothAdapter.Enable();
                 }
             } else
@@ -122,20 +111,7 @@ namespace NativeBLE.Droid.Native
                 logger.LogError("Bluetooth not supported.");
             }
         }
-
-        //public bool GetBluetoothLeScanner()
-        //{
-        //    if (mBluetoothAdapter != null)
-        //    {
-        //        logger.LogInfo("Get bluetooth LE Scanner");
-        //        mBluetoothLeScanner = mBluetoothAdapter.BluetoothLeScanner; //.GetBluetoothLeScanner();
-        //        return true;
-        //    }
-        //    logger.LogWarning("Bluetooth not supported or access to the Bluetooth adapter is not received. Use first. Use first GetBluetoothAdapter()");
-
-        //    return false;
-        //}
-
+        
         public void ScanLeDevice()
         {
             mHandler.PostDelayed(() => {
@@ -148,20 +124,16 @@ namespace NativeBLE.Droid.Native
             pageViewModel.Scanning = true;
             ScanFilter scanFilter = (new ScanFilter.Builder()).SetServiceUuid(parcelUuid).Build();
             List<ScanFilter> scanFilters = new List<ScanFilter>();
-
-            //if (mLeDeviceListAdapter.Count > 0)
+            
             if (pageViewModel.Devices.Count > 0)
             {
-                //mLeDeviceListAdapter.clear();
                 pageViewModel.Devices.Clear();
-                //mLeDeviceListAdapter.notifyDataSetChanged();
             }
 
             scanFilters.Add(scanFilter);
             ScanSettings scanSettings =
                     new ScanSettings.Builder().Build();
-            //GetBluetoothLeScanner();
-            //mBluetoothLeScanner.StartScan(scanFilters, scanSettings, this);
+
             mBluetoothAdapter.BluetoothLeScanner.StartScan(scanFilters, scanSettings, this);
             logger.LogInfo("Start scanning.");
         }
@@ -169,7 +141,7 @@ namespace NativeBLE.Droid.Native
         public void StopScan()
         {
             pageViewModel.Scanning = false;
-            //mBluetoothLeScanner = mBluetoothAdapter.BluetoothLeScanner;
+
             mBluetoothAdapter.BluetoothLeScanner.StopScan(this);
             mBluetoothAdapter.BluetoothLeScanner.Dispose();
 
@@ -181,8 +153,7 @@ namespace NativeBLE.Droid.Native
         {
             logger.LogInfo(String.Format("onScanResult: found {0} - {1}", result.Device.Name, result.Device.Address));
             base.OnScanResult(callbackType, result);
-            //mLeDeviceListAdapter.addDevice(result.Device);
-            //mLeDeviceListAdapter.notifyDataSetChanged();
+
             var contais = false;
             foreach (var device in pageViewModel.Devices)
             {
@@ -194,12 +165,6 @@ namespace NativeBLE.Droid.Native
             }
             if (!contais)
                 pageViewModel.Devices.Add(new DeviceViewModel(result.Device.Name, result.Device.Address));
-        }
-
-        //public void SetDevicesList(DevicesListViewModel value)
-        //{
-        //    logger.LogInfo("Set Devices List view model");
-        //    mDevicesListViewModel = value;
-        //}
+        }        
     }
 }

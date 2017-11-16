@@ -28,15 +28,4 @@ type DeviceViewModel(name: string,
         and set value =
             device.Address <- value
             base.OnPropertyChanged <@ x.Address @>
-
-//type DevicesListViewModel()=    
-//    let _devices = new ObservableCollection<DeviceViewModel>()
-//    //do 
-//    //    _devices.Add(DeviceViewModel("Perifit", ".........."))
-//    //    _devices.Add(DeviceViewModel("Perifit2", "---------"))
-
-//    member x.Devices 
-//        with get() = _devices
-//        //and set value = 
-//        //    _devices <- value
-
+            
