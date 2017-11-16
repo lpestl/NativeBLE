@@ -13,7 +13,9 @@ namespace NativeBLE.Core
         {
             InitializeComponent();
 
-            MainPage = new NativeBLE.Core.Forms.MainPage();
+            MainPage = new NavigationPage(new NativeBLE.Core.Forms.MainPage());
+
+            
         }
 
         protected override void OnStart()
