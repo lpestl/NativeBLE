@@ -4,18 +4,15 @@ open System.ComponentModel
 open System
 open System.Collections.ObjectModel
 
-type Device() =
-    member val Name = String.Empty with get, set
-    member val Address = String.Empty with get, set
+type Device(?name: string, ?address: string) =
+    member val Name = (defaultArg name String.Empty) with get, set
+    member val Address = (defaultArg address String.Empty) with get, set
 
 type DeviceViewModel(name: string,
                      address: string)=
     inherit BaseViewModel()
 
-    let device = new Device()
-    do
-        device.Name <- name
-        device.Address <- address
+    let device = new Device(name, address)
 
     member x.Name 
         with get() = device.Name

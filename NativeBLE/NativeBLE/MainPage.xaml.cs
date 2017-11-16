@@ -55,5 +55,14 @@ namespace NativeBLE.Core.Forms
                 IsBusy = true;
             }
         }
+
+        public async void OnChoiceDevice(object sender, ItemTappedEventArgs e)
+        {
+            if (e.Item is DeviceViewModel selectedDevice)
+            {
+                //await DisplayAlert("Выбранно устройство ", $"{selectedDevice.Name} - {selectedDevice.Address}", "OK");
+                await Navigation.PushAsync(new SensorDataPage(selectedDevice));
+            }
+        }
     }
 }
