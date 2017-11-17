@@ -123,6 +123,7 @@
   <ItemGroup>
     <Compile Include="MainActivity.cs" />
     <Compile Include="Native\Logger.cs" />
+    <Compile Include="Native\NativeDeviceList.cs" />
     <Compile Include="Native\NativeDeviceScaner.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

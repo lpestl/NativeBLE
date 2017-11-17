@@ -10,4 +10,4 @@ type IDeviceScanner =
     abstract member ScanLeDevice: unit -> unit
     abstract member StopScan: unit -> unit
     
-    abstract member pageViewModel: MainPageViewModel with get,set
+    abstract member PageViewModel: MainPageViewModel with get,set

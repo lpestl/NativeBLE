@@ -25,7 +25,7 @@ namespace NativeBLE.Droid.Native
     class NativeDeviceScanner : ScanCallback, IDeviceScanner
     {
         private BluetoothAdapter mBluetoothAdapter;
-
+        private NativeDeviceList mDeviceList = new NativeDeviceList();
         private Handler mHandler;
 
         private static int REQUEST_ENABLE_BT = 1;
@@ -37,8 +37,17 @@ namespace NativeBLE.Droid.Native
 
         private Activity mThisActivity;
         private Logger logger;
-        
-        public MainPageViewModel pageViewModel { get; set; }
+
+        private MainPageViewModel pageViewModel;
+        public MainPageViewModel PageViewModel
+        {
+            get { return pageViewModel; }
+            set
+            {
+                pageViewModel = value;
+                mDeviceList.DeviceViewModelList = value.Devices;
+            }
+        }
 
         public NativeDeviceScanner()
         {
@@ -125,9 +134,13 @@ namespace NativeBLE.Droid.Native
             ScanFilter scanFilter = (new ScanFilter.Builder()).SetServiceUuid(parcelUuid).Build();
             List<ScanFilter> scanFilters = new List<ScanFilter>();
             
-            if (pageViewModel.Devices.Count > 0)
+            //if (pageViewModel.Devices.Count > 0)
+            //{
+            //    pageViewModel.Devices.Clear();
+            //}
+            if (!mDeviceList.IsEmpty())
             {
-                pageViewModel.Devices.Clear();
+                mDeviceList.Clear();
             }
 
             scanFilters.Add(scanFilter);
@@ -154,17 +167,21 @@ namespace NativeBLE.Droid.Native
             logger.LogInfo(String.Format("onScanResult: found {0} - {1}", result.Device.Name, result.Device.Address));
             base.OnScanResult(callbackType, result);
 
-            var contais = false;
-            foreach (var device in pageViewModel.Devices)
+            //var contais = false;
+            //foreach (var device in pageViewModel.Devices)
+            //{
+            //    if (device.Address.Equals(result.Device.Address))
+            //    {
+            //        contais = true;
+            //        break;
+            //    }
+            //}
+
+            if (!mDeviceList.Contains(new DeviceViewModel(result.Device.Name, result.Device.Address)))
             {
-                if (device.Address.Equals(result.Device.Address))
-                {
-                    contais = true;
-                    break;
-                }
+                //pageViewModel.Devices.Add(new DeviceViewModel(result.Device.Name, result.Device.Address));
+                mDeviceList.Add(result.Device);
             }
-            if (!contais)
-                pageViewModel.Devices.Add(new DeviceViewModel(result.Device.Name, result.Device.Address));
         }        
     }
 }

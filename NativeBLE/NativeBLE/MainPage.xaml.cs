@@ -25,7 +25,7 @@ namespace NativeBLE.Core.Forms
             InitializeComponent();
             Title = "Bluetooth LE Scanner";
 
-            deviceScanner.pageViewModel = mainPageViewModel;
+            deviceScanner.PageViewModel = mainPageViewModel;
 
             if (deviceScanner.CheckSupportBLE())
                 logger.LogInfo("BLE is supported!");
@@ -60,8 +60,18 @@ namespace NativeBLE.Core.Forms
         {
             if (e.Item is DeviceViewModel selectedDevice)
             {
+                int numDevice = -1;
+                for(int i = 0; i < mainPageViewModel.Devices.Count; i++)
+                {
+                    if (selectedDevice.Address.Equals(mainPageViewModel.Devices[i].Address))
+                    {
+                        numDevice = i;
+                        break;
+                    }
+                }
                 //await DisplayAlert("Выбранно устройство ", $"{selectedDevice.Name} - {selectedDevice.Address}", "OK");
-                await Navigation.PushAsync(new SensorDataPage(selectedDevice));
+                deviceScanner.StopScan();
+                await Navigation.PushAsync(new SensorDataPage(numDevice, selectedDevice));
             }
         }
     }
