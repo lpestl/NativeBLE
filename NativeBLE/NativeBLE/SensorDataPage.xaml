@@ -5,15 +5,118 @@
     <ContentPage.ToolbarItems>
         <ToolbarItem 
             Text="Connect"
-            Activated="OnClick"  
+            Activated="ToolbarItem_Activated"  
             Order="Primary" 
             Priority="0" />
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+        <StackLayout Margin="10" HorizontalOptions="FillAndExpand">
+            
+            <!--The first block. Sleev mode switch and button-->
+            <StackLayout
+                Margin="5"
+                HorizontalOptions="FillAndExpand"
+                Orientation="Vertical">
+                <StackLayout
+                    Margin="5"
+                    HorizontalOptions="FillAndExpand"
+                    Orientation="Horizontal">
+                        <Label Text="Sleev mode" HorizontalOptions="StartAndExpand" />
+                        <Switch IsToggled="False" HorizontalOptions="End" />
+                </StackLayout>
+                <Button Text="Disconnected" Clicked="ConnectButton_Clicked" HorizontalOptions="FillAndExpand" />
+            </StackLayout>
+            
+            <!--The second block. Sensors datas-->
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <!--<RowDefinition Height="*" />-->
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <!--0:0-->
+                <StackLayout Margin="5" Orientation="Horizontal" HorizontalOptions="FillAndExpand" Grid.Row="0" Grid.Column="0">
+                    <Label Text="Sensor A:" HorizontalOptions="StartAndExpand" />
+                    <Label Text="No data" HorizontalOptions="End" />
+                </StackLayout>
+                <!--0:1-->
+                <StackLayout Margin="5" Orientation="Horizontal" HorizontalOptions="FillAndExpand" Grid.Row="0" Grid.Column="1" >
+                    <Label Text="Sensor B:" HorizontalOptions="StartAndExpand" />
+                    <Label Text="No data" HorizontalOptions="End" />
+                </StackLayout>
+                <!--1:0--><!--
+                <Label Text="Sensor A" FontSize="Medium" Grid.Row="1" Grid.Column="0" />
+                --><!--1:1--><!--
+                <Label Text="Sensor B" FontSize="Medium" Grid.Row="1" Grid.Column="1" />-->
+                <!--2:0-->
+                <StackLayout Margin="5" Orientation="Vertical" HorizontalOptions="FillAndExpand" Grid.Row="1" Grid.Column="0">
+                    <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                        <Label Text="Hight presure" HorizontalOptions="StartAndExpand" FontSize="Small" />
+                        <Label Text="N/A" HorizontalOptions="End" />
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                        <Label Text="Low presure" HorizontalOptions="StartAndExpand" FontSize="Small" />
+                        <Label Text="N/A" HorizontalOptions="End" />
+                    </StackLayout>
+                </StackLayout>
+                <!--2:1-->
+                <StackLayout Margin="5" Orientation="Vertical" HorizontalOptions="FillAndExpand" Grid.Row="1" Grid.Column="1">
+                    <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                        <Label Text="Hight presure" HorizontalOptions="StartAndExpand" FontSize="Small" />
+                        <Label Text="N/A" HorizontalOptions="End" />
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                        <Label Text="Low presure" HorizontalOptions="StartAndExpand" FontSize="Small" />
+                        <Label Text="N/A" HorizontalOptions="End" />
+                    </StackLayout>
+                </StackLayout>
+            </Grid>
+            
+            <StackLayout Margin="5" HorizontalOptions="FillAndExpand" Orientation="Vertical">
+                <Button Text="Result" Clicked="OnResultButton_Clicked" HorizontalOptions="FillAndExpand" VerticalOptions="StartAndExpand" IsVisible="False" />
+            </StackLayout>
+
+            <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                <Label Text="State: " HorizontalOptions="Start" />
+                <Label Text="Disconnected" HorizontalOptions="StartAndExpand" />
+            </StackLayout>
+
+            <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                <Label Text="Battery level: " HorizontalOptions="Start" />
+                <Label Text="N/A" HorizontalOptions="StartAndExpand" />
+            </StackLayout>
+
+            <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                <Label Text="RSSI: " HorizontalOptions="Start" />
+                <Label Text="N/A" HorizontalOptions="StartAndExpand" />
+            </StackLayout>
+
+            <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                <Label Text="Batch: " HorizontalOptions="Start" />
+                <Label Text="N/A" HorizontalOptions="StartAndExpand" />
+            </StackLayout>
+
+            <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                <Label Text="Device address: " HorizontalOptions="Start" />
+                <Label Text="00-00-00-00-00-00" HorizontalOptions="StartAndExpand" />
+            </StackLayout>
+
+            <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                <Label Text="Version: " HorizontalOptions="Start" />
+                <Label Text="" HorizontalOptions="StartAndExpand" />
+            </StackLayout>
+
+            <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                <Label Text="Data: " HorizontalOptions="Start" />
+                <Label Text="No data" HorizontalOptions="StartAndExpand" />
+            </StackLayout>
+
+            <Label Text="" HorizontalOptions="FillAndExpand" />
+            
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

@@ -17,5 +17,20 @@ namespace NativeBLE.Core
             InitializeComponent();
             Title = currentDeviceVM.Name;
         }
+
+        private void ConnectButton_Clicked(object sender, EventArgs e)
+        {
+
+        }
+
+        private void ToolbarItem_Activated(object sender, EventArgs e)
+        {
+
+        }
+
+        private void OnResultButton_Clicked(object sender, EventArgs e)
+        {
+
+        }
     }
 }
