@@ -27,6 +27,7 @@ namespace NativeBLE.Droid.Native
         private BluetoothAdapter mBluetoothAdapter;
         private NativeDeviceList mDeviceList = new NativeDeviceList();
         private Handler mHandler;
+        private Action scanerCallback;
 
         private static int REQUEST_ENABLE_BT = 1;
         // Stops scanning after 10 seconds.
@@ -57,6 +58,14 @@ namespace NativeBLE.Droid.Native
             
             mHandler = new Handler();
             mThisActivity = Xamarin.Forms.Forms.Context as Activity;
+
+            scanerCallback = () =>
+            {
+                logger.LogInfo("mHandler.PostDelayed called. Scanner stoped.");
+                pageViewModel.Scanning = false;
+                mBluetoothAdapter.BluetoothLeScanner.StopScan(this);
+                mBluetoothAdapter.BluetoothLeScanner.Dispose();
+            };
         }
 
         public bool CheckPermissions()
@@ -123,12 +132,7 @@ namespace NativeBLE.Droid.Native
         
         public void ScanLeDevice()
         {
-            mHandler.PostDelayed(() => {
-                logger.LogInfo("mHandler.PostDelayed called. Scanner stoped.");
-                pageViewModel.Scanning = false;
-                mBluetoothAdapter.BluetoothLeScanner.StopScan(this);
-                mBluetoothAdapter.BluetoothLeScanner.Dispose();
-            }, SCAN_PERIOD);
+            mHandler.PostDelayed(scanerCallback, SCAN_PERIOD);
 
             pageViewModel.Scanning = true;
             ScanFilter scanFilter = (new ScanFilter.Builder()).SetServiceUuid(parcelUuid).Build();
@@ -158,7 +162,7 @@ namespace NativeBLE.Droid.Native
             mBluetoothAdapter.BluetoothLeScanner.StopScan(this);
             mBluetoothAdapter.BluetoothLeScanner.Dispose();
 
-            //mHandler.removeCallbacks(r);
+            mHandler.RemoveCallbacks(scanerCallback);
             logger.LogInfo("Turn Scanning Off");
         }
 

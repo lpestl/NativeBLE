@@ -122,9 +122,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MainActivity.cs" />
+    <Compile Include="Native\BluetoothLeService.cs" />
     <Compile Include="Native\Logger.cs" />
     <Compile Include="Native\NativeDeviceList.cs" />
     <Compile Include="Native\NativeDeviceScaner.cs" />
+    <Compile Include="Native\NativeSensorData.cs" />
+    <Compile Include="Native\SampleGattAttributes.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

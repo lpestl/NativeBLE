@@ -6,8 +6,8 @@
              Title="{Binding Name}">
     <ContentPage.ToolbarItems>
         <ToolbarItem 
-            Text="Connect"
-            Activated="ToolbarItem_Activated"  
+            Text="{Binding ToolBarButtonText}"
+            Clicked="ToolbarItem_Clicked"
             Order="Primary" 
             Priority="0" />
     </ContentPage.ToolbarItems>
@@ -23,10 +23,19 @@
                     Margin="5"
                     HorizontalOptions="FillAndExpand"
                     Orientation="Horizontal">
-                        <Label Text="Sleev mode" HorizontalOptions="StartAndExpand" />
-                        <Switch IsToggled="False" HorizontalOptions="End" />
+                        <Label Text="{Binding SleeveModeText}" HorizontalOptions="StartAndExpand" />
+                        <Switch 
+                            x:Name="mSwitch" 
+                            IsToggled="{Binding SleeveMode}" 
+                            HorizontalOptions="End" 
+                            PropertyChanged="Switch_PropertyChanged" />
                 </StackLayout>
-                <Button Text="Disconnected" Clicked="ConnectButton_Clicked" HorizontalOptions="FillAndExpand" />
+                <Button 
+                    Text="{Binding TextStart}" 
+                    TextColor="{Binding ColorStart}"
+                    IsEnabled="{Binding EnableStart}"
+                    Clicked="ConnectButton_Clicked" 
+                    HorizontalOptions="FillAndExpand" />
             </StackLayout>
             
             <!--The second block. Sensors datas-->
@@ -43,12 +52,12 @@
                 <!--0:0-->
                 <StackLayout Margin="5" Orientation="Horizontal" HorizontalOptions="FillAndExpand" Grid.Row="0" Grid.Column="0">
                     <Label Text="Sensor A:" HorizontalOptions="StartAndExpand" />
-                    <Label Text="No data" HorizontalOptions="End" />
+                    <Label Text="{Binding SensorA}" HorizontalOptions="End" />
                 </StackLayout>
                 <!--0:1-->
                 <StackLayout Margin="5" Orientation="Horizontal" HorizontalOptions="FillAndExpand" Grid.Row="0" Grid.Column="1" >
                     <Label Text="Sensor B:" HorizontalOptions="StartAndExpand" />
-                    <Label Text="No data" HorizontalOptions="End" />
+                    <Label Text="{Binding SensorB}" HorizontalOptions="End" />
                 </StackLayout>
                 <!--1:0--><!--
                 <Label Text="Sensor A" FontSize="Medium" Grid.Row="1" Grid.Column="0" />
@@ -58,48 +67,54 @@
                 <StackLayout Margin="5" Orientation="Vertical" HorizontalOptions="FillAndExpand" Grid.Row="1" Grid.Column="0">
                     <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
                         <Label Text="Hight presure" HorizontalOptions="StartAndExpand" FontSize="Small" />
-                        <Label Text="N/A" HorizontalOptions="End" />
+                        <Label Text="{Binding SensorA_TopResult}" HorizontalOptions="End" />
                     </StackLayout>
                     <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
                         <Label Text="Low presure" HorizontalOptions="StartAndExpand" FontSize="Small" />
-                        <Label Text="N/A" HorizontalOptions="End" />
+                        <Label Text="{Binding SensorA_BottomResult}" HorizontalOptions="End" />
                     </StackLayout>
                 </StackLayout>
                 <!--2:1-->
                 <StackLayout Margin="5" Orientation="Vertical" HorizontalOptions="FillAndExpand" Grid.Row="1" Grid.Column="1">
                     <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
                         <Label Text="Hight presure" HorizontalOptions="StartAndExpand" FontSize="Small" />
-                        <Label Text="N/A" HorizontalOptions="End" />
+                        <Label Text="{Binding SensorB_TopResult}" HorizontalOptions="End" />
                     </StackLayout>
                     <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
                         <Label Text="Low presure" HorizontalOptions="StartAndExpand" FontSize="Small" />
-                        <Label Text="N/A" HorizontalOptions="End" />
+                        <Label Text="{Binding SensorB_BottomResult}" HorizontalOptions="End" />
                     </StackLayout>
                 </StackLayout>
             </Grid>
             
             <StackLayout Margin="5" HorizontalOptions="FillAndExpand" Orientation="Vertical">
-                <Button Text="Result" Clicked="OnResultButton_Clicked" HorizontalOptions="FillAndExpand" VerticalOptions="StartAndExpand" IsVisible="False" />
+                <Button 
+                    Text="{Binding TextResult}" 
+                    BackgroundColor="{Binding ColorResult}"
+                    Clicked="OnResultButton_Clicked" 
+                    HorizontalOptions="FillAndExpand" 
+                    VerticalOptions="StartAndExpand" 
+                    IsVisible="{Binding VisibleResult}" />
             </StackLayout>
 
             <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
                 <Label Text="State: " HorizontalOptions="Start" />
-                <Label Text="Disconnected" HorizontalOptions="StartAndExpand" />
+                <Label Text="{Binding ConnectedStateText}" HorizontalOptions="StartAndExpand" />
             </StackLayout>
 
             <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
                 <Label Text="Battery level: " HorizontalOptions="Start" />
-                <Label Text="N/A" HorizontalOptions="StartAndExpand" />
+                <Label Text="{Binding BataryLevel}" HorizontalOptions="StartAndExpand" />
             </StackLayout>
 
             <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
                 <Label Text="RSSI: " HorizontalOptions="Start" />
-                <Label Text="N/A" HorizontalOptions="StartAndExpand" />
+                <Label Text="{Binding RSSI}" HorizontalOptions="StartAndExpand" />
             </StackLayout>
 
             <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
                 <Label Text="Batch: " HorizontalOptions="Start" />
-                <Label Text="N/A" HorizontalOptions="StartAndExpand" />
+                <Label Text="{Binding BatchVersion}" HorizontalOptions="StartAndExpand" />
             </StackLayout>
 
             <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
@@ -109,15 +124,15 @@
 
             <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
                 <Label Text="Version: " HorizontalOptions="Start" />
-                <Label Text="" HorizontalOptions="StartAndExpand" />
+                <Label Text="{Binding FirmwareVersion}" HorizontalOptions="StartAndExpand" />
             </StackLayout>
 
             <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
                 <Label Text="Data: " HorizontalOptions="Start" />
-                <Label Text="No data" HorizontalOptions="StartAndExpand" />
+                <Label Text="{Binding Data}" HorizontalOptions="StartAndExpand" />
             </StackLayout>
 
-            <Label Text="" HorizontalOptions="FillAndExpand" />
+            <Label Text="{Binding DebugString}" HorizontalOptions="FillAndExpand" />
             
         </StackLayout>
     </ContentPage.Content>

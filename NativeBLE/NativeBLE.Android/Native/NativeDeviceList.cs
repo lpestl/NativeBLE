@@ -15,7 +15,7 @@ using System.Collections.ObjectModel;
 
 namespace NativeBLE.Droid.Native
 {
-    class NativeDeviceList : IDeviceList
+    class NativeDeviceList
     {
         private List<BluetoothDevice> deviceList = new List<BluetoothDevice>();
         public ObservableCollection<DeviceViewModel> DeviceViewModelList { get; set; }
@@ -57,7 +57,7 @@ namespace NativeBLE.Droid.Native
             var contais = false;
             foreach (var device in DeviceViewModelList)
             {
-                if (device == value)
+                if (device.Address.Equals(value.Address))
                 {
                     contais = true;
                     break;

@@ -23,7 +23,37 @@ namespace NativeBLE.Droid
 
             global::Xamarin.Forms.Forms.Init(this, bundle);
             LoadApplication(new Core.App());
-        }        
+        }
+
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+            var checkSensors = Native.NativeSensorData.GetInstance();
+            if (checkSensors != null)
+            {
+                checkSensors.OnDestroy();
+            }
+        }
+
+        protected override void OnPause()
+        {
+            base.OnPause();
+            var checkSensors = Native.NativeSensorData.GetInstance();
+            if (checkSensors != null)
+            {
+                checkSensors.OnPause();
+            }
+        }
+
+        protected override void OnResume()
+        {
+            base.OnResume();
+            var checkSensors = Native.NativeSensorData.GetInstance();
+            if (checkSensors != null)
+            {
+                checkSensors.OnResume();
+            }
+        }
     }
 }
 
