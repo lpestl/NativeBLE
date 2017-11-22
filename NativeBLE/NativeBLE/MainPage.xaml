@@ -14,7 +14,8 @@
         <StackLayout>
             <ListView
                 ItemsSource="{Binding Devices}" 
-                HasUnevenRows="True">
+                HasUnevenRows="True"
+                ItemTapped="OnChoiceDevice">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>

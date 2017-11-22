@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,27 +18,38 @@ using Android.Content.PM;
 using Android.Support.V4.App;
 using Android.Locations;
 using Android.Util;
+using static Android.Support.V4.App.ActivityCompat;
 
 [assembly: Xamarin.Forms.Dependency(typeof(NativeBLE.Droid.Native.NativeDeviceScanner))]
 namespace NativeBLE.Droid.Native
 {
-    class NativeDeviceScanner : ScanCallback, IDeviceScanner
+    class NativeDeviceScanner : ScanCallback, IDeviceScanner, IOnRequestPermissionsResultCallback
     {
         private BluetoothAdapter mBluetoothAdapter;
-
+        private NativeDeviceList mDeviceList = new NativeDeviceList();
         private Handler mHandler;
+        private Action scanerCallback;
 
         private static int REQUEST_ENABLE_BT = 1;
         // Stops scanning after 10 seconds.
         private static long SCAN_PERIOD = 20000;
-        private static int PERMISSION_REQUEST_COARSE_LOCATION = 1;
+        private static int PERMISSION_REQUEST_COARSE_LOCATION = 0;
 
         public static ParcelUuid parcelUuid = ParcelUuid.FromString("0000aa40-0000-1000-8000-00805f9b34fb");
 
         private Activity mThisActivity;
         private Logger logger;
-        
-        public MainPageViewModel pageViewModel { get; set; }
+
+        private MainPageViewModel pageViewModel;
+        public MainPageViewModel PageViewModel
+        {
+            get { return pageViewModel; }
+            set
+            {
+                pageViewModel = value;
+                mDeviceList.DeviceViewModelList = value.Devices;
+            }
+        }
 
         public NativeDeviceScanner()
         {
@@ -48,6 +59,14 @@ namespace NativeBLE.Droid.Native
             
             mHandler = new Handler();
             mThisActivity = Xamarin.Forms.Forms.Context as Activity;
+
+            scanerCallback = () =>
+            {
+                logger.LogInfo("mHandler.PostDelayed called. Scanner stoped.");
+                pageViewModel.Scanning = false;
+                mBluetoothAdapter.BluetoothLeScanner.StopScan(this);
+                mBluetoothAdapter.BluetoothLeScanner.Dispose();
+            };
         }
 
         public bool CheckPermissions()
@@ -72,10 +91,10 @@ namespace NativeBLE.Droid.Native
             {
                 logger.LogInfo("Build.VERSION.SdkInt >= API 23");
                 const string permission = Manifest.Permission.AccessCoarseLocation;
-                if (mThisActivity.CheckSelfPermission(permission) != (int)Permission.Granted)
+                if (mThisActivity.CheckSelfPermission(permission) != Permission.Granted)
                 {
                     logger.LogWarning("AccessCoarseLocation Permission is not granted");
-                    AlertDialog.Builder builder = new AlertDialog.Builder(Android.App.Application.Context.ApplicationContext);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(mThisActivity);
                     builder.SetTitle("This app needs location access");
                     builder.SetMessage("Please grant location access so this app can detect bluetooth devices.");
                     builder.SetPositiveButton("OK", (senderAlert, args) => {
@@ -114,20 +133,19 @@ namespace NativeBLE.Droid.Native
         
         public void ScanLeDevice()
         {
-            mHandler.PostDelayed(() => {
-                logger.LogInfo("mHandler.PostDelayed called. Scanner stoped.");
-                pageViewModel.Scanning = false;
-                mBluetoothAdapter.BluetoothLeScanner.StopScan(this);
-                mBluetoothAdapter.BluetoothLeScanner.Dispose();
-            }, SCAN_PERIOD);
+            mHandler.PostDelayed(scanerCallback, SCAN_PERIOD);
 
             pageViewModel.Scanning = true;
             ScanFilter scanFilter = (new ScanFilter.Builder()).SetServiceUuid(parcelUuid).Build();
             List<ScanFilter> scanFilters = new List<ScanFilter>();
             
-            if (pageViewModel.Devices.Count > 0)
+            //if (pageViewModel.Devices.Count > 0)
+            //{
+            //    pageViewModel.Devices.Clear();
+            //}
+            if (!mDeviceList.IsEmpty())
             {
-                pageViewModel.Devices.Clear();
+                mDeviceList.Clear();
             }
 
             scanFilters.Add(scanFilter);
@@ -145,7 +163,7 @@ namespace NativeBLE.Droid.Native
             mBluetoothAdapter.BluetoothLeScanner.StopScan(this);
             mBluetoothAdapter.BluetoothLeScanner.Dispose();
 
-            //mHandler.removeCallbacks(r);
+            mHandler.RemoveCallbacks(scanerCallback);
             logger.LogInfo("Turn Scanning Off");
         }
 
@@ -154,17 +172,41 @@ namespace NativeBLE.Droid.Native
             logger.LogInfo(String.Format("onScanResult: found {0} - {1}", result.Device.Name, result.Device.Address));
             base.OnScanResult(callbackType, result);
 
-            var contais = false;
-            foreach (var device in pageViewModel.Devices)
+            //var contais = false;
+            //foreach (var device in pageViewModel.Devices)
+            //{
+            //    if (device.Address.Equals(result.Device.Address))
+            //    {
+            //        contais = true;
+            //        break;
+            //    }
+            //}
+
+            if (!mDeviceList.Contains(new DeviceViewModel(result.Device.Name, result.Device.Address)))
             {
-                if (device.Address.Equals(result.Device.Address))
+                //pageViewModel.Devices.Add(new DeviceViewModel(result.Device.Name, result.Device.Address));
+                mDeviceList.Add(result.Device);
+            }
+        }
+
+        public void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Permission[] grantResults)
+        {
+            if (requestCode == PERMISSION_REQUEST_COARSE_LOCATION)
+            {
+                if (grantResults[0] == Permission.Granted)
                 {
-                    contais = true;
-                    break;
+                    logger.TraceInformation("coarse location permission granted");
+                }
+                else
+                {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(mThisActivity);
+                    builder.SetTitle("Functionality limited");
+                    logger.TraceInformation("Since location access has not been granted, this app will not be able to discover beacons when in the background.");
+                    builder.SetMessage("Since location access has not been granted, this app will not be able to discover beacons when in the background.");
+                    builder.SetPositiveButton("OK", (senderAlert, args) => {});
+                    builder.Show();
                 }
             }
-            if (!contais)
-                pageViewModel.Devices.Add(new DeviceViewModel(result.Device.Name, result.Device.Address));
-        }        
+        }
     }
 }

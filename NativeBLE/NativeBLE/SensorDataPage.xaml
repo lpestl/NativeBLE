@@ -1,0 +1,139 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:NativeBLE.Core"
+             x:Class="NativeBLE.Core.Forms.SensorDataPage"
+             Title="{Binding Name}">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem 
+            Text="{Binding ToolBarButtonText}"
+            Clicked="ToolbarItem_Clicked"
+            Order="Primary" 
+            Priority="0" />
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <StackLayout Margin="10" HorizontalOptions="FillAndExpand">
+            
+            <!--The first block. Sleev mode switch and button-->
+            <StackLayout
+                Margin="5"
+                HorizontalOptions="FillAndExpand"
+                Orientation="Vertical">
+                <StackLayout
+                    Margin="5"
+                    HorizontalOptions="FillAndExpand"
+                    Orientation="Horizontal">
+                        <Label Text="{Binding SleeveModeText}" HorizontalOptions="StartAndExpand" />
+                        <Switch 
+                            x:Name="mSwitch" 
+                            IsToggled="{Binding SleeveMode}" 
+                            HorizontalOptions="End" 
+                            PropertyChanged="Switch_PropertyChanged" />
+                </StackLayout>
+                <Button 
+                    Text="{Binding TextStart}" 
+                    TextColor="{Binding ColorStart}"
+                    IsEnabled="{Binding EnableStart}"
+                    Clicked="ConnectButton_Clicked" 
+                    HorizontalOptions="FillAndExpand" />
+            </StackLayout>
+            
+            <!--The second block. Sensors datas-->
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <!--<RowDefinition Height="*" />-->
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <!--0:0-->
+                <StackLayout Margin="5" Orientation="Horizontal" HorizontalOptions="FillAndExpand" Grid.Row="0" Grid.Column="0">
+                    <Label Text="Sensor A:" HorizontalOptions="StartAndExpand" />
+                    <Label Text="{Binding SensorA}" HorizontalOptions="End" />
+                </StackLayout>
+                <!--0:1-->
+                <StackLayout Margin="5" Orientation="Horizontal" HorizontalOptions="FillAndExpand" Grid.Row="0" Grid.Column="1" >
+                    <Label Text="Sensor B:" HorizontalOptions="StartAndExpand" />
+                    <Label Text="{Binding SensorB}" HorizontalOptions="End" />
+                </StackLayout>
+                <!--1:0--><!--
+                <Label Text="Sensor A" FontSize="Medium" Grid.Row="1" Grid.Column="0" />
+                --><!--1:1--><!--
+                <Label Text="Sensor B" FontSize="Medium" Grid.Row="1" Grid.Column="1" />-->
+                <!--2:0-->
+                <StackLayout Margin="5" Orientation="Vertical" HorizontalOptions="FillAndExpand" Grid.Row="1" Grid.Column="0">
+                    <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                        <Label Text="Hight presure" HorizontalOptions="StartAndExpand" FontSize="Small" />
+                        <Label Text="{Binding SensorA_TopResult}" HorizontalOptions="End" />
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                        <Label Text="Low presure" HorizontalOptions="StartAndExpand" FontSize="Small" />
+                        <Label Text="{Binding SensorA_BottomResult}" HorizontalOptions="End" />
+                    </StackLayout>
+                </StackLayout>
+                <!--2:1-->
+                <StackLayout Margin="5" Orientation="Vertical" HorizontalOptions="FillAndExpand" Grid.Row="1" Grid.Column="1">
+                    <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                        <Label Text="Hight presure" HorizontalOptions="StartAndExpand" FontSize="Small" />
+                        <Label Text="{Binding SensorB_TopResult}" HorizontalOptions="End" />
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                        <Label Text="Low presure" HorizontalOptions="StartAndExpand" FontSize="Small" />
+                        <Label Text="{Binding SensorB_BottomResult}" HorizontalOptions="End" />
+                    </StackLayout>
+                </StackLayout>
+            </Grid>
+            
+            <StackLayout Margin="5" HorizontalOptions="FillAndExpand" Orientation="Vertical">
+                <Button 
+                    Text="{Binding TextResult}" 
+                    BackgroundColor="{Binding ColorResult}"
+                    Clicked="OnResultButton_Clicked" 
+                    HorizontalOptions="FillAndExpand" 
+                    VerticalOptions="StartAndExpand" 
+                    IsVisible="{Binding VisibleResult}" />
+            </StackLayout>
+
+            <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                <Label Text="State: " HorizontalOptions="Start" />
+                <Label Text="{Binding ConnectionState}" HorizontalOptions="StartAndExpand" />
+            </StackLayout>
+
+            <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" IsVisible="False">
+                <Label Text="Battery level: " HorizontalOptions="Start" />
+                <Label Text="{Binding BataryLevel}" HorizontalOptions="StartAndExpand" />
+            </StackLayout>
+
+            <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                <Label Text="RSSI: " HorizontalOptions="Start" />
+                <Label Text="{Binding RSSI}" HorizontalOptions="StartAndExpand" />
+            </StackLayout>
+
+            <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" IsVisible="False">
+                <Label Text="Batch: " HorizontalOptions="Start" />
+                <Label Text="{Binding BatchVersion}" HorizontalOptions="StartAndExpand" />
+            </StackLayout>
+
+            <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                <Label Text="Device address: " HorizontalOptions="Start" />
+                <Label Text="{Binding Address}" HorizontalOptions="StartAndExpand" />
+            </StackLayout>
+
+            <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" IsVisible="False">
+                <Label Text="Version: " HorizontalOptions="Start" />
+                <Label Text="{Binding FirmwareVersion}" HorizontalOptions="StartAndExpand" />
+            </StackLayout>
+
+            <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                <Label Text="Data: " HorizontalOptions="Start" />
+                <Label Text="{Binding Data}" HorizontalOptions="StartAndExpand" />
+            </StackLayout>
+
+            <Label Text="{Binding DebugString}" HorizontalOptions="FillAndExpand" />
+            
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

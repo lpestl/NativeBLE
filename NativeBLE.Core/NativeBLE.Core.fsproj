@@ -52,6 +52,9 @@
     <Compile Include="Device.fs" />
     <Compile Include="MainPageViewModel.fs" />
     <Compile Include="IDeviceScanner.fs" />
+    <Compile Include="SensorData.fs" />
+    <Compile Include="SensorViewModel.fs" />
+    <Compile Include="ISensorData.fs" />
     <None Include="Script.fsx" />
     <Content Include="packages.config" />
   </ItemGroup>
