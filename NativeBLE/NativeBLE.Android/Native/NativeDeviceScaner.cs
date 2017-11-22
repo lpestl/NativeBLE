@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -94,7 +94,7 @@ namespace NativeBLE.Droid.Native
                 if (mThisActivity.CheckSelfPermission(permission) != Permission.Granted)
                 {
                     logger.LogWarning("AccessCoarseLocation Permission is not granted");
-                    AlertDialog.Builder builder = new AlertDialog.Builder(mThisActivity.ApplicationContext);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(mThisActivity);
                     builder.SetTitle("This app needs location access");
                     builder.SetMessage("Please grant location access so this app can detect bluetooth devices.");
                     builder.SetPositiveButton("OK", (senderAlert, args) => {
