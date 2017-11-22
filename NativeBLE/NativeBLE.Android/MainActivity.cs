@@ -37,12 +37,12 @@ namespace NativeBLE.Droid
 
         protected override void OnPause()
         {
-            base.OnPause();
             var checkSensors = Native.NativeSensorData.GetInstance();
             if (checkSensors != null)
             {
                 checkSensors.OnPause();
             }
+            base.OnPause();
         }
 
         protected override void OnResume()

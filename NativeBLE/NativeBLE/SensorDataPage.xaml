@@ -99,10 +99,10 @@
 
             <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
                 <Label Text="State: " HorizontalOptions="Start" />
-                <Label Text="{Binding ConnectedStateText}" HorizontalOptions="StartAndExpand" />
+                <Label Text="{Binding ConnectionState}" HorizontalOptions="StartAndExpand" />
             </StackLayout>
 
-            <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+            <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" IsVisible="False">
                 <Label Text="Battery level: " HorizontalOptions="Start" />
                 <Label Text="{Binding BataryLevel}" HorizontalOptions="StartAndExpand" />
             </StackLayout>
@@ -112,7 +112,7 @@
                 <Label Text="{Binding RSSI}" HorizontalOptions="StartAndExpand" />
             </StackLayout>
 
-            <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+            <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" IsVisible="False">
                 <Label Text="Batch: " HorizontalOptions="Start" />
                 <Label Text="{Binding BatchVersion}" HorizontalOptions="StartAndExpand" />
             </StackLayout>
@@ -122,7 +122,7 @@
                 <Label Text="{Binding Address}" HorizontalOptions="StartAndExpand" />
             </StackLayout>
 
-            <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+            <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" IsVisible="False">
                 <Label Text="Version: " HorizontalOptions="Start" />
                 <Label Text="{Binding FirmwareVersion}" HorizontalOptions="StartAndExpand" />
             </StackLayout>

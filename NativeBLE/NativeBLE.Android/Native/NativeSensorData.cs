@@ -58,7 +58,7 @@ namespace NativeBLE.Droid.Native
 
         private List<List<BluetoothGattCharacteristic>> mGattCharacteristics =
                 new List<List<BluetoothGattCharacteristic>>();
-        private bool mConnected = false;
+        //private bool mConnected = false;
         private BluetoothGatt mBluetoothGatt;
         private LinkedList<String> lMovingAverage = new LinkedList<String>();
         private LinkedList<String> lstDynamicMinA = new LinkedList<String>();
@@ -119,7 +119,7 @@ namespace NativeBLE.Droid.Native
 
             public override void OnFinish()
             {
-                if (!NativeSensorData.Instance.mConnected)
+                if (!NativeSensorData.Instance.sensorViewModel.Connected)
                 {
                     NativeSensorData.Instance.sensorViewModel.DebugString = "Reconnection Attempt";
                     Log.Debug(TAG, "Reconnection Attempt");
@@ -133,7 +133,7 @@ namespace NativeBLE.Droid.Native
                 i++;
                 if (i == 3)
                 {
-                    if (!NativeSensorData.Instance.mConnected)
+                    if (!NativeSensorData.Instance.sensorViewModel.Connected)
                     {
                         NativeSensorData.Instance.mBluetoothLeService.disconnect();
                         Log.Debug(TAG, "Disconnect before reconnection attempt");
@@ -183,15 +183,8 @@ namespace NativeBLE.Droid.Native
             Log.Debug(TAG, "DisonnectionWatch counter started");
         }
 
-        public class NativeServiceConnection : IServiceConnection
+        public class NativeServiceConnection : Java.Lang.Object, IServiceConnection
         {
-            public IntPtr Handle => throw new NotImplementedException();
-
-            public void Dispose()
-            {
-                throw new NotImplementedException();
-            }
-
             public void OnServiceConnected(ComponentName name, IBinder service)
             {
                 NativeSensorData.Instance.mBluetoothLeService = ((BluetoothLeService.LocalBinder)service).getService();
@@ -223,6 +216,8 @@ namespace NativeBLE.Droid.Native
         // ACTION_DATA_AVAILABLE: received data from the device.  This can be a result of read
         //                       or notification operations.
         private NativeBroadcastReceiver mGattUpdateReceiver = new NativeBroadcastReceiver();
+
+        [BroadcastReceiver(Enabled = true)]
         public class NativeBroadcastReceiver : BroadcastReceiver
         {
             public override void OnReceive(Context context, Intent intent)
@@ -232,7 +227,7 @@ namespace NativeBLE.Droid.Native
                 {
                     Log.Debug(TAG, "Connection Event: Device Connected");
                     NativeSensorData.Instance.sensorViewModel.DebugString = "Connection Event: Device Connected";
-                    NativeSensorData.Instance.mConnected = true;
+                    NativeSensorData.Instance.sensorViewModel.Connected = true;
                     NativeSensorData.Instance.sensorViewModel.EnableStart = true;
                     // mStartButton.setEnabled(TRUE);
                     NativeSensorData.Instance.updateConnectionState("Connecting...");
@@ -240,7 +235,7 @@ namespace NativeBLE.Droid.Native
                 }
                 else if (BluetoothLeService.ACTION_GATT_DISCONNECTED.Equals(action))
                 {
-                    NativeSensorData.Instance.mConnected = false;
+                    NativeSensorData.Instance.sensorViewModel.Connected = false;
                     if (NativeSensorData.Instance.sensorViewModel.bDisconnectionWatchFlag == false)
                     {
                         if (NativeSensorData.Instance.mBluetoothGatt != null) NativeSensorData.Instance.mBluetoothGatt.Close();
@@ -344,6 +339,11 @@ namespace NativeBLE.Droid.Native
 
         }
 
+        public SensorViewModel GetSensorViewModel()
+        {
+            return sensorViewModel;
+        }
+
         private static int itrTest = 0;
         
         public void OnClickStartButton()
@@ -360,14 +360,8 @@ namespace NativeBLE.Droid.Native
             alertDialog.Show();
         }
 
-        public class SensorAdialogOnShowListener : IDialogInterfaceOnShowListener
+        public class SensorAdialogOnShowListener : Java.Lang.Object, IDialogInterfaceOnShowListener
         {
-            public IntPtr Handle => throw new NotImplementedException();
-
-            public void Dispose()
-            {
-            }
-
             public void OnShow(IDialogInterface dialog)
             {
                 Button positiveButton = NativeSensorData.Instance.alertDialog.GetButton((int)DialogButtonType.Positive);
@@ -375,27 +369,15 @@ namespace NativeBLE.Droid.Native
             }
         }
 
-        public class NullDialogOnClickListener : IDialogInterfaceOnClickListener
+        public class NullDialogOnClickListener : Java.Lang.Object, IDialogInterfaceOnClickListener
         {
-            public IntPtr Handle => throw new NotImplementedException();
-
-            public void Dispose()
-            {
-            }
-
             public void OnClick(IDialogInterface dialog, int which)
             {
             }
         }
 
-        public class SensorPositiveClickListener : IOnClickListener
+        public class SensorPositiveClickListener : Java.Lang.Object, IOnClickListener
         {
-            public IntPtr Handle => throw new NotImplementedException();
-
-            public void Dispose()
-            {
-            }
-
             public void OnClick(View v)
             {
                 NativeSensorData.Instance.alertDialog2.SetMessage("00:4");
@@ -746,7 +728,10 @@ namespace NativeBLE.Droid.Native
 
         public void OnPause()
         {
-            mThisActivity.ApplicationContext.UnregisterReceiver(mGattUpdateReceiver);
+            if (mGattUpdateReceiver != null)
+            {
+                mThisActivity.ApplicationContext.UnregisterReceiver(mGattUpdateReceiver);
+            }
         }
 
         public void OnDestroy()
@@ -757,12 +742,12 @@ namespace NativeBLE.Droid.Native
         
         public void OnClickResultButton()
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         public void OnClickConnectButton()
         {
-            if (sensorViewModel.Connected)
+            if (!sensorViewModel.Connected)
             {
                 StartConnectionWatch();
                 Log.Debug(TAG, "Connection Watch started");
@@ -780,6 +765,7 @@ namespace NativeBLE.Droid.Native
             sensorViewModel = value;
             Intent gattServiceIntent = new Intent(mThisActivity.ApplicationContext, typeof(BluetoothLeService));
             mThisActivity.ApplicationContext.BindService(gattServiceIntent, mServiceConnection, Bind.AutoCreate);
+            OnResume();
         }
     }
 }

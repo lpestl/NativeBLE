@@ -23,13 +23,14 @@ using Java.Nio.Charset;
 
 namespace NativeBLE.Droid.Native
 {
+    [Service]
     public class BluetoothLeService : Service
     {
         private static String TAG = "BluetoothLeService";
 
         private static BluetoothLeService instance;
 
-        private BluetoothLeService() { }
+        public BluetoothLeService() { }
 
         public static BluetoothLeService Instance
         {
@@ -50,17 +51,17 @@ namespace NativeBLE.Droid.Native
         private ProfileState mConnectionState = ProfileState.Disconnected;
         
         public static String ACTION_GATT_CONNECTED =
-                "com.example.bluetooth.le.ACTION_GATT_CONNECTED";
+                "com.lpestl.bluetooth.le.ACTION_GATT_CONNECTED";
         public static String ACTION_GATT_DISCONNECTED =
-                "com.example.bluetooth.le.ACTION_GATT_DISCONNECTED";
+                "com.lpestl.bluetooth.le.ACTION_GATT_DISCONNECTED";
         public static String ACTION_GATT_SERVICES_DISCOVERED =
-                "com.example.bluetooth.le.ACTION_GATT_SERVICES_DISCOVERED";
+                "com.lpestl.bluetooth.le.ACTION_GATT_SERVICES_DISCOVERED";
         public static String ACTION_DATA_AVAILABLE =
-                "com.example.bluetooth.le.ACTION_DATA_AVAILABLE";
+                "com.lpestl.bluetooth.le.ACTION_DATA_AVAILABLE";
         public static String RSSI_DATA_AVAILABLE =
-                "com.example.bluetooth.le.RSSI_DATA_AVAILABLE";
+                "com.lpestl.bluetooth.le.RSSI_DATA_AVAILABLE";
         public static String EXTRA_DATA =
-                "com.example.bluetooth.le.EXTRA_DATA";
+                "com.lpestl.bluetooth.le.EXTRA_DATA";
         public static String EXTRA_BATTERY_DATA =
                 "Battery Data";
 
@@ -89,6 +90,7 @@ namespace NativeBLE.Droid.Native
 
         private IBinder mBinder = new LocalBinder();
         private MyBluetoothGattCallback mGattCallback = new MyBluetoothGattCallback();
+        private Activity mThisActivity;
 
         public class LocalBinder : Binder
         {
@@ -116,7 +118,7 @@ namespace NativeBLE.Droid.Native
         {
             Intent intent = new Intent(action);
 
-            SendBroadcast(intent);
+            mThisActivity.ApplicationContext.SendBroadcast(intent);
         }
 
         private void broadcastUpdate(String action, int rssi)
@@ -129,7 +131,7 @@ namespace NativeBLE.Droid.Native
             intent.PutExtras(extras);
             Log.Debug(TAG, "RSSI loaded within intent");
 
-            SendBroadcast(intent);
+            mThisActivity.ApplicationContext.SendBroadcast(intent);
 
         }
 
@@ -236,21 +238,22 @@ namespace NativeBLE.Droid.Native
                     long lData = 0;
                     String sData;
 
-                    StringBuilder stringBuilder = new StringBuilder(data.Length);
-                    foreach (byte byteChar in data)
-                        stringBuilder.Append(String.Format("%02X ", byteChar));
+                    var stringBytes = BitConverter.ToString(data);
+                    //StringBuilder stringBuilder = new StringBuilder(data.Length);
+                    //foreach (byte byteChar in data)
+                    //    stringBuilder.Append(String.Format("%02X ", byteChar));
 
                     lData = bytesToLong(data, 0, 1);
                     sData = lData.ToString();
 
-                    extras.PutString(EXTRA_DATA, stringBuilder.ToString());
+                    extras.PutString(EXTRA_DATA, stringBytes);
                     extras.PutString(EXTRA_SENSOR_A, sData);
                     extras.PutString(EXTRA_SENSOR_B, bytesToLong(data, 2, 3).ToString());
                     //intent.putExtra(EXTRA_DATA, data.toString());
                     intent.PutExtras(extras);
                 }
             }
-            SendBroadcast(intent);
+            mThisActivity.ApplicationContext.SendBroadcast(intent);
         }
 
         public static long bytesToLong(byte[] b, int minbyte, int maxbyte)
@@ -276,7 +279,7 @@ namespace NativeBLE.Droid.Native
                 {
                     intentAction = ACTION_GATT_CONNECTED;
                     BluetoothLeService.Instance.mConnectionState = ProfileState.Connected;
-
+                    NativeSensorData.Instance.GetSensorViewModel().ConnectionState = "Connected";
                     bool rssiStatus = BluetoothLeService.Instance.mBluetoothGatt.ReadRemoteRssi();
                     BluetoothLeService.Instance.broadcastUpdate(intentAction);
                     //Toast.makeText(DeviceControlActivity.this,"Connected to GATT server.",Toast.LENGTH_SHORT).show();
@@ -292,6 +295,7 @@ namespace NativeBLE.Droid.Native
                 {
                     intentAction = ACTION_GATT_DISCONNECTED;
                     BluetoothLeService.Instance.mConnectionState = ProfileState.Disconnected;
+                    NativeSensorData.Instance.GetSensorViewModel().ConnectionState = "Disconnected";
                     Log.Debug(TAG, "Disconnected from GATT server.");
                     // Toast.makeText(getApplicationContext(),"Disconnected from GATT server.",Toast.LENGTH_SHORT).show();
                     BluetoothLeService.Instance.broadcastUpdate(intentAction);
@@ -388,7 +392,7 @@ namespace NativeBLE.Droid.Native
                 //base.OnReadRemoteRssi(gatt, rssi, status);
                 if (status == BluetoothGatt.GattSuccess)
                 {
-                    Log.Debug(TAG, String.Format("BluetoothGatt ReadRssi[%d]", rssi));
+                    Log.Debug(TAG, String.Format("BluetoothGatt ReadRssi {0}", rssi));
                     iRssi = rssi;
 
                     BluetoothLeService.Instance.broadcastUpdate(RSSI_DATA_AVAILABLE, rssi);
@@ -400,9 +404,11 @@ namespace NativeBLE.Droid.Native
         {
             // For API level 18 and above, get a reference to BluetoothAdapter through
             // BluetoothManager.
+            mThisActivity = mThisActivity = Xamarin.Forms.Forms.Context as Activity;
             if (mBluetoothManager == null)
             {
-                mBluetoothManager = (BluetoothManager)GetSystemService(Context.BluetoothService);
+                //var sysService = GetSystemService(Context.BluetoothService);
+                mBluetoothManager = mThisActivity.GetSystemService(Context.BluetoothService) as BluetoothManager;
                 if (mBluetoothManager == null)
                 {
                     Log.Error(TAG, "Unable to initialize BluetoothManager.");
@@ -484,6 +490,7 @@ namespace NativeBLE.Droid.Native
             //Toast.makeText(getApplicationContext(), "Trying to create a new connection.", Toast.LENGTH_SHORT).show();
             mBluetoothDeviceAddress = address;
             mConnectionState = ProfileState.Connecting;
+            NativeSensorData.Instance.GetSensorViewModel().ConnectionState = "Connecting...";
             return true;
         }
 
@@ -567,6 +574,7 @@ namespace NativeBLE.Droid.Native
 
 
                 Log.Debug(TAG, "Setting notification: Pressure Characteristic detected ");
+
                 BluetoothGattDescriptor descriptor = characteristic.GetDescriptor(UUID.FromString("00002902-0000-1000-8000-00805F9B34FB"));
                 if (descriptor != null)
                 {
@@ -575,8 +583,7 @@ namespace NativeBLE.Droid.Native
                     mBluetoothGatt.WriteDescriptor(descriptor);
                     Log.Debug(TAG, "Setting notification: Write Pressure Descriptor");
 
-                }
-                else { Log.Warn(TAG, "NOTIFICATION SET UP IGNORED"); }
+                } else { Log.Warn(TAG, "NOTIFICATION SET UP IGNORED"); }
 
             }
 
