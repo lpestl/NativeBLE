@@ -18,11 +18,12 @@ using Android.Content.PM;
 using Android.Support.V4.App;
 using Android.Locations;
 using Android.Util;
+using static Android.Support.V4.App.ActivityCompat;
 
 [assembly: Xamarin.Forms.Dependency(typeof(NativeBLE.Droid.Native.NativeDeviceScanner))]
 namespace NativeBLE.Droid.Native
 {
-    class NativeDeviceScanner : ScanCallback, IDeviceScanner
+    class NativeDeviceScanner : ScanCallback, IDeviceScanner, IOnRequestPermissionsResultCallback
     {
         private BluetoothAdapter mBluetoothAdapter;
         private NativeDeviceList mDeviceList = new NativeDeviceList();
@@ -32,7 +33,7 @@ namespace NativeBLE.Droid.Native
         private static int REQUEST_ENABLE_BT = 1;
         // Stops scanning after 10 seconds.
         private static long SCAN_PERIOD = 20000;
-        private static int PERMISSION_REQUEST_COARSE_LOCATION = 1;
+        private static int PERMISSION_REQUEST_COARSE_LOCATION = 0;
 
         public static ParcelUuid parcelUuid = ParcelUuid.FromString("0000aa40-0000-1000-8000-00805f9b34fb");
 
@@ -90,10 +91,10 @@ namespace NativeBLE.Droid.Native
             {
                 logger.LogInfo("Build.VERSION.SdkInt >= API 23");
                 const string permission = Manifest.Permission.AccessCoarseLocation;
-                if (mThisActivity.CheckSelfPermission(permission) != (int)Permission.Granted)
+                if (mThisActivity.CheckSelfPermission(permission) != Permission.Granted)
                 {
                     logger.LogWarning("AccessCoarseLocation Permission is not granted");
-                    AlertDialog.Builder builder = new AlertDialog.Builder(Android.App.Application.Context.ApplicationContext);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(mThisActivity.ApplicationContext);
                     builder.SetTitle("This app needs location access");
                     builder.SetMessage("Please grant location access so this app can detect bluetooth devices.");
                     builder.SetPositiveButton("OK", (senderAlert, args) => {
@@ -186,6 +187,26 @@ namespace NativeBLE.Droid.Native
                 //pageViewModel.Devices.Add(new DeviceViewModel(result.Device.Name, result.Device.Address));
                 mDeviceList.Add(result.Device);
             }
-        }        
+        }
+
+        public void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Permission[] grantResults)
+        {
+            if (requestCode == PERMISSION_REQUEST_COARSE_LOCATION)
+            {
+                if (grantResults[0] == Permission.Granted)
+                {
+                    logger.TraceInformation("coarse location permission granted");
+                }
+                else
+                {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(mThisActivity);
+                    builder.SetTitle("Functionality limited");
+                    logger.TraceInformation("Since location access has not been granted, this app will not be able to discover beacons when in the background.");
+                    builder.SetMessage("Since location access has not been granted, this app will not be able to discover beacons when in the background.");
+                    builder.SetPositiveButton("OK", (senderAlert, args) => {});
+                    builder.Show();
+                }
+            }
+        }
     }
 }
