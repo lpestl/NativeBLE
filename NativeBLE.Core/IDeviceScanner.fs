@@ -6,8 +6,9 @@ type IDeviceScanner =
     abstract member CheckSupportBLE: unit -> bool
     abstract member GetRuntimePermissions: unit -> unit
     abstract member GetBluetoothAdapter: unit -> unit
+    abstract member GetDevice: int -> Device
 
     abstract member ScanLeDevice: unit -> unit
     abstract member StopScan: unit -> unit
     
-    abstract member PageViewModel: MainPageViewModel with get,set
+    abstract member Init: MainPageViewModel -> unit

@@ -20,10 +20,10 @@ using Android.Locations;
 using Android.Util;
 using static Android.Support.V4.App.ActivityCompat;
 
-[assembly: Xamarin.Forms.Dependency(typeof(NativeBLE.Droid.Native.NativeDeviceScanner))]
+//[assembly: Xamarin.Forms.Dependency(typeof(NativeBLE.Droid.Native.NativeDeviceScanner))]
 namespace NativeBLE.Droid.Native
 {
-    class NativeDeviceScanner : ScanCallback, IDeviceScanner, IOnRequestPermissionsResultCallback
+    class NativeDeviceScanner : ScanCallback, /*IDeviceScanner,*/ IOnRequestPermissionsResultCallback
     {
         private BluetoothAdapter mBluetoothAdapter;
         private NativeDeviceList mDeviceList = new NativeDeviceList();

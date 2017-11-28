@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27004.2008
+VisualStudioVersion = 15.0.27004.2009
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NativeBLE.Droid", "NativeBLE\NativeBLE.Android\NativeBLE.Droid.csproj", "{82351901-60A3-4859-BBFD-C0043D7FDCBD}"
 EndProject
@@ -9,8 +9,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NativeBLE.Core.Forms", "Nat
 	ProjectSection(ProjectDependencies) = postProject
 		{A4FF3D3F-5808-48FD-A4E6-EC161166BDC9} = {A4FF3D3F-5808-48FD-A4E6-EC161166BDC9}
 	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NativeBLE.iOS", "NativeBLE\NativeBLE.iOS\NativeBLE.iOS.csproj", "{157E2E5A-C5D0-4A87-979B-40A5131C359B}"
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "NativeBLE.Core", "NativeBLE.Core\NativeBLE.Core.fsproj", "{A4FF3D3F-5808-48FD-A4E6-EC161166BDC9}"
 EndProject
@@ -162,38 +160,6 @@ Global
 		{3E9D4422-CC16-4C2E-BA53-A559423E19EE}.Release|x64.Build.0 = Release|Any CPU
 		{3E9D4422-CC16-4C2E-BA53-A559423E19EE}.Release|x86.ActiveCfg = Release|Any CPU
 		{3E9D4422-CC16-4C2E-BA53-A559423E19EE}.Release|x86.Build.0 = Release|Any CPU
-		{157E2E5A-C5D0-4A87-979B-40A5131C359B}.Ad-Hoc|Any CPU.ActiveCfg = Ad-Hoc|iPhoneSimulator
-		{157E2E5A-C5D0-4A87-979B-40A5131C359B}.Ad-Hoc|ARM.ActiveCfg = Ad-Hoc|iPhone
-		{157E2E5A-C5D0-4A87-979B-40A5131C359B}.Ad-Hoc|iPhone.ActiveCfg = Ad-Hoc|iPhone
-		{157E2E5A-C5D0-4A87-979B-40A5131C359B}.Ad-Hoc|iPhone.Build.0 = Ad-Hoc|iPhone
-		{157E2E5A-C5D0-4A87-979B-40A5131C359B}.Ad-Hoc|iPhoneSimulator.ActiveCfg = Ad-Hoc|iPhoneSimulator
-		{157E2E5A-C5D0-4A87-979B-40A5131C359B}.Ad-Hoc|iPhoneSimulator.Build.0 = Ad-Hoc|iPhoneSimulator
-		{157E2E5A-C5D0-4A87-979B-40A5131C359B}.Ad-Hoc|x64.ActiveCfg = Ad-Hoc|iPhone
-		{157E2E5A-C5D0-4A87-979B-40A5131C359B}.Ad-Hoc|x86.ActiveCfg = Ad-Hoc|iPhone
-		{157E2E5A-C5D0-4A87-979B-40A5131C359B}.AppStore|Any CPU.ActiveCfg = AppStore|iPhoneSimulator
-		{157E2E5A-C5D0-4A87-979B-40A5131C359B}.AppStore|ARM.ActiveCfg = AppStore|iPhone
-		{157E2E5A-C5D0-4A87-979B-40A5131C359B}.AppStore|iPhone.ActiveCfg = AppStore|iPhone
-		{157E2E5A-C5D0-4A87-979B-40A5131C359B}.AppStore|iPhone.Build.0 = AppStore|iPhone
-		{157E2E5A-C5D0-4A87-979B-40A5131C359B}.AppStore|iPhoneSimulator.ActiveCfg = AppStore|iPhoneSimulator
-		{157E2E5A-C5D0-4A87-979B-40A5131C359B}.AppStore|iPhoneSimulator.Build.0 = AppStore|iPhoneSimulator
-		{157E2E5A-C5D0-4A87-979B-40A5131C359B}.AppStore|x64.ActiveCfg = AppStore|iPhone
-		{157E2E5A-C5D0-4A87-979B-40A5131C359B}.AppStore|x86.ActiveCfg = AppStore|iPhone
-		{157E2E5A-C5D0-4A87-979B-40A5131C359B}.Debug|Any CPU.ActiveCfg = Debug|iPhoneSimulator
-		{157E2E5A-C5D0-4A87-979B-40A5131C359B}.Debug|ARM.ActiveCfg = Debug|iPhone
-		{157E2E5A-C5D0-4A87-979B-40A5131C359B}.Debug|iPhone.ActiveCfg = Debug|iPhone
-		{157E2E5A-C5D0-4A87-979B-40A5131C359B}.Debug|iPhone.Build.0 = Debug|iPhone
-		{157E2E5A-C5D0-4A87-979B-40A5131C359B}.Debug|iPhoneSimulator.ActiveCfg = Debug|iPhoneSimulator
-		{157E2E5A-C5D0-4A87-979B-40A5131C359B}.Debug|iPhoneSimulator.Build.0 = Debug|iPhoneSimulator
-		{157E2E5A-C5D0-4A87-979B-40A5131C359B}.Debug|x64.ActiveCfg = Debug|iPhone
-		{157E2E5A-C5D0-4A87-979B-40A5131C359B}.Debug|x86.ActiveCfg = Debug|iPhone
-		{157E2E5A-C5D0-4A87-979B-40A5131C359B}.Release|Any CPU.ActiveCfg = Release|iPhoneSimulator
-		{157E2E5A-C5D0-4A87-979B-40A5131C359B}.Release|ARM.ActiveCfg = Release|iPhone
-		{157E2E5A-C5D0-4A87-979B-40A5131C359B}.Release|iPhone.ActiveCfg = Release|iPhone
-		{157E2E5A-C5D0-4A87-979B-40A5131C359B}.Release|iPhone.Build.0 = Release|iPhone
-		{157E2E5A-C5D0-4A87-979B-40A5131C359B}.Release|iPhoneSimulator.ActiveCfg = Release|iPhoneSimulator
-		{157E2E5A-C5D0-4A87-979B-40A5131C359B}.Release|iPhoneSimulator.Build.0 = Release|iPhoneSimulator
-		{157E2E5A-C5D0-4A87-979B-40A5131C359B}.Release|x64.ActiveCfg = Release|iPhone
-		{157E2E5A-C5D0-4A87-979B-40A5131C359B}.Release|x86.ActiveCfg = Release|iPhone
 		{A4FF3D3F-5808-48FD-A4E6-EC161166BDC9}.Ad-Hoc|Any CPU.ActiveCfg = Release|Any CPU
 		{A4FF3D3F-5808-48FD-A4E6-EC161166BDC9}.Ad-Hoc|Any CPU.Build.0 = Release|Any CPU
 		{A4FF3D3F-5808-48FD-A4E6-EC161166BDC9}.Ad-Hoc|ARM.ActiveCfg = Release|Any CPU

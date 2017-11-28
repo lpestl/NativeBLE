@@ -16,10 +16,10 @@ using System.Drawing;
 using Java.Util;
 using static Android.Views.View;
 
-[assembly: Xamarin.Forms.Dependency(typeof(NativeBLE.Droid.Native.NativeSensorData))]
+//[assembly: Xamarin.Forms.Dependency(typeof(NativeBLE.Droid.Native.NativeSensorData))]
 namespace NativeBLE.Droid.Native
 {
-    class NativeSensorData : ISensorData
+    class NativeSensorData /*: ISensorData*/
     {
         private static String TAG = "NativeSensorData";
 
@@ -155,7 +155,7 @@ namespace NativeBLE.Droid.Native
             public override void OnTick(long millisUntilFinished)
             {
                 Log.Debug(TAG, "DisconnectionWatch tick");
-                if (!NativeSensorData.Instance.sensorViewModel.bDisconnectionWatchFlag)
+                //if (!NativeSensorData.Instance.sensorViewModel.bDisconnectionWatchFlag)
                 {
                     NativeSensorData.Instance.mBluetoothLeService.disconnect();
                     Log.Debug(TAG, "On tick disconnection attempt");
@@ -163,7 +163,7 @@ namespace NativeBLE.Droid.Native
                 i++;
                 if (i == 2)
                 {
-                    if (!NativeSensorData.Instance.sensorViewModel.bDisconnectionWatchFlag)
+                    //if (!NativeSensorData.Instance.sensorViewModel.bDisconnectionWatchFlag)
                     {
                         NativeSensorData.Instance.mBluetoothLeService.disconnect();
                         //mBluetoothLeService.close();
@@ -236,7 +236,7 @@ namespace NativeBLE.Droid.Native
                 else if (BluetoothLeService.ACTION_GATT_DISCONNECTED.Equals(action))
                 {
                     NativeSensorData.Instance.sensorViewModel.Connected = false;
-                    if (NativeSensorData.Instance.sensorViewModel.bDisconnectionWatchFlag == false)
+                    //if (NativeSensorData.Instance.sensorViewModel.bDisconnectionWatchFlag == false)
                     {
                         if (NativeSensorData.Instance.mBluetoothGatt != null) NativeSensorData.Instance.mBluetoothGatt.Close();
                         else Log.Debug(TAG, "GattNull at disconnetion");
@@ -245,7 +245,7 @@ namespace NativeBLE.Droid.Native
                     }
                     NativeSensorData.Instance.sensorViewModel.EnableStart = false;
                     //mStartButton.setEnabled(FALSE);
-                    NativeSensorData.Instance.sensorViewModel.bDisconnectionWatchFlag = true;
+                    //NativeSensorData.Instance.sensorViewModel.bDisconnectionWatchFlag = true;
                     Log.Debug(TAG, "Disconnection Event: Device Disconnected");
                     NativeSensorData.Instance.sensorViewModel.DebugString = "Connection Event: Device Disconnected";
                     NativeSensorData.Instance.sensorViewModel.ColorStart = Xamarin.Forms.Color.Black;
@@ -754,7 +754,7 @@ namespace NativeBLE.Droid.Native
                 mBluetoothLeService.connect(sensorViewModel.Address);
             } else
             {
-                sensorViewModel.bDisconnectionWatchFlag = false;
+                //sensorViewModel.bDisconnectionWatchFlag = false;
                 StartDisconnectionWatch();
                 mBluetoothLeService.disconnect();
             }

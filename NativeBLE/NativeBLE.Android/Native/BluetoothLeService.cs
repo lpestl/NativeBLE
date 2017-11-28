@@ -23,7 +23,7 @@ using Java.Nio.Charset;
 
 namespace NativeBLE.Droid.Native
 {
-    [Service]
+    //[Service]
     public class BluetoothLeService : Service
     {
         private static String TAG = "BluetoothLeService";
@@ -50,35 +50,20 @@ namespace NativeBLE.Droid.Native
         private BluetoothGatt mBluetoothGatt;
         private ProfileState mConnectionState = ProfileState.Disconnected;
         
-        public static String ACTION_GATT_CONNECTED =
-                "com.lpestl.bluetooth.le.ACTION_GATT_CONNECTED";
-        public static String ACTION_GATT_DISCONNECTED =
-                "com.lpestl.bluetooth.le.ACTION_GATT_DISCONNECTED";
-        public static String ACTION_GATT_SERVICES_DISCOVERED =
-                "com.lpestl.bluetooth.le.ACTION_GATT_SERVICES_DISCOVERED";
-        public static String ACTION_DATA_AVAILABLE =
-                "com.lpestl.bluetooth.le.ACTION_DATA_AVAILABLE";
-        public static String RSSI_DATA_AVAILABLE =
-                "com.lpestl.bluetooth.le.RSSI_DATA_AVAILABLE";
-        public static String EXTRA_DATA =
-                "com.lpestl.bluetooth.le.EXTRA_DATA";
-        public static String EXTRA_BATTERY_DATA =
-                "Battery Data";
+        public static String ACTION_GATT_CONNECTED =              "com.lpestl.bluetooth.le.ACTION_GATT_CONNECTED";
+        public static String ACTION_GATT_DISCONNECTED =           "com.lpestl.bluetooth.le.ACTION_GATT_DISCONNECTED";
+        public static String ACTION_GATT_SERVICES_DISCOVERED =    "com.lpestl.bluetooth.le.ACTION_GATT_SERVICES_DISCOVERED";
+        public static String ACTION_DATA_AVAILABLE =              "com.lpestl.bluetooth.le.ACTION_DATA_AVAILABLE";
+        public static String RSSI_DATA_AVAILABLE =                "com.lpestl.bluetooth.le.RSSI_DATA_AVAILABLE";
+        public static String EXTRA_DATA =                         "com.lpestl.bluetooth.le.EXTRA_DATA";
+        public static String EXTRA_BATTERY_DATA =                 "Battery Data";
 
-        public static String EXTRA_FIRMWARE_VERSION_DATA =
-                "Firmware Version Data";
-        public static String EXTRA_BATCH_VERSION_DATA =
-                "Batch Version Data";
+        public static String EXTRA_FIRMWARE_VERSION_DATA =        "Firmware Version Data";
+        public static String EXTRA_BATCH_VERSION_DATA =           "Batch Version Data";
 
-        public static String EXTRA_RSSI_DATA =
-                "Batch Version Data";
-
-
-        public static String EXTRA_SENSOR_A =
-                " SENSOR A";
-
-        public static String EXTRA_SENSOR_B =
-                " SENSOR B";
+        public static String EXTRA_RSSI_DATA =                    "Batch Version Data";
+        public static String EXTRA_SENSOR_A =                     " SENSOR A";
+        public static String EXTRA_SENSOR_B =                     " SENSOR B";
         public static UUID UUID_PRESSURE_SERVICE =
                 UUID.FromString(SampleGattAttributes.PRESSURE_SERVICE);
         public static UUID UUID_BATTERY_SERVICE =

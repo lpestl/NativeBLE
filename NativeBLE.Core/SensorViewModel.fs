@@ -4,7 +4,7 @@ open Xamarin.Forms
 open System
 open System.Collections.ObjectModel
 
-type SensorViewModel(device: DeviceViewModel, i: int) =
+type SensorViewModel(device: DeviceViewModel) =
     inherit BaseViewModel()
 
     let logger = DependencyService.Get<ILogger>()
@@ -14,13 +14,8 @@ type SensorViewModel(device: DeviceViewModel, i: int) =
     let deviceViewModel = device
     let sensorData = SensorData()
     
-    let mutable index = i
     let mutable mConnected = false
     let mutable mToolBarButtonText = "Connect"
-    //let mutable mConnectionState = "Disconnected"
-    //let mutable mDataField = String.Empty
-    //let mutable mSensorAField = "No data"
-    //let mutable mSensorBField = "No data"
     let mutable mDebug = String.Empty
 
     // Result button
@@ -33,17 +28,8 @@ type SensorViewModel(device: DeviceViewModel, i: int) =
     let mutable mColorTextStartButton = Color.Black
 
     let mutable mSleeveModeText = "Sleeve mode (>800 release)"
-    //let mutable mSwitch = true
-    //let mutable mBataryLevelText = "N/A"
-    //let mutable mBatchVersionText = "N/A"
-    //let mutable mRSSIText = "N/A"
-    //let mutable mFirmwareText = "N/A"
-    //let mutable mSensorAUPresult = "N/A"
-    //let mutable mSensorADownresult = "N/A"
-    //let mutable mSensorBUPresult = "N/A"
-    //let mutable mSensorBDownresult = "N/A"
     
-    member val bDisconnectionWatchFlag = true with get, set
+    //member val bDisconnectionWatchFlag = true with get, set
 
     member x.Name with get() = deviceViewModel.Name
     member x.Address with get() = deviceViewModel.Address
