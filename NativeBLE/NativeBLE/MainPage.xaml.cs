@@ -25,7 +25,7 @@ namespace NativeBLE.Core.Forms
             InitializeComponent();
             Title = "Bluetooth LE Scanner";
 
-            deviceScanner.PageViewModel = mainPageViewModel;
+            deviceScanner.Init(mainPageViewModel);
 
             if (deviceScanner.CheckSupportBLE())
                 logger.LogInfo("BLE is supported!");
@@ -35,9 +35,11 @@ namespace NativeBLE.Core.Forms
             if (deviceScanner.CheckPermissions())
                 logger.LogInfo("Android permission AccessCoarseLocation granted!");
             else
+            {
                 logger.LogWarning("The application does not have the necessary permission (AccessCoarseLocation).");
                 // Only if SDK API VERSION >= 23
                 deviceScanner.GetRuntimePermissions();
+            }
 
             deviceScanner.GetBluetoothAdapter();
         }
@@ -58,20 +60,23 @@ namespace NativeBLE.Core.Forms
 
         public async void OnChoiceDevice(object sender, ItemTappedEventArgs e)
         {
+            logger.TraceInformation("--------------------------------------------");
+            logger.TraceInformation("----The beginning of the problem place.-----");
+
             if (e.Item is DeviceViewModel selectedDevice)
             {
-                int numDevice = -1;
-                for(int i = 0; i < mainPageViewModel.Devices.Count; i++)
-                {
-                    if (selectedDevice.Address.Equals(mainPageViewModel.Devices[i].Address))
-                    {
-                        numDevice = i;
-                        break;
-                    }
-                }
-                //await DisplayAlert("Выбранно устройство ", $"{selectedDevice.Name} - {selectedDevice.Address}", "OK");
+                logger.TraceInformation($"OnTapped on e.Item: {selectedDevice.Name} - {selectedDevice.Address}");
+
+                var index = mainPageViewModel.Devices.IndexOf(selectedDevice);
+                logger.TraceInformation($"Finded index on ObservibleCollection : {index} - {mainPageViewModel.Devices[index].Address}");
+
+                var device = deviceScanner.GetDevice(index);
+                logger.TraceInformation($"Finded device on native devices list : {index} - {device.Address}");
+
                 deviceScanner.StopScan();
-                await Navigation.PushAsync(new SensorDataPage(numDevice, selectedDevice));
+
+                //await DisplayAlert($"Выбранно устройство {index}", $"{device.Name} - {device.Address}", "OK");
+                await Navigation.PushAsync(new SensorDataPage(device));
             }
         }
     }

@@ -17,17 +17,19 @@ namespace NativeBLE.Core.Forms
         private SensorViewModel sensorViewModel;
         private ISensorData nativeSensorData = DependencyService.Get<ISensorData>();
 
-        public SensorDataPage(int indexDeviceVM, DeviceViewModel currentDeviceVM)
+        public SensorDataPage(Device currentDevice)
         {
             logger.TAG = "SensorDataPage";
 
-            logger.LogInfo(String.Format("{0} - {1}: {2}", currentDeviceVM.Name, currentDeviceVM.Address, indexDeviceVM));
-            sensorViewModel = new SensorViewModel(currentDeviceVM, indexDeviceVM);
-            nativeSensorData.Init(sensorViewModel);
+            logger.LogInfo(String.Format("{0} - {1}", currentDevice.Name, currentDevice.Address));
+            sensorViewModel = new SensorViewModel(new DeviceViewModel(currentDevice.Name, currentDevice.Address));
+            nativeSensorData.Init(sensorViewModel, currentDevice);
             this.BindingContext = sensorViewModel;
 
-            InitializeComponent();     
-            
+            logger.TraceInformation("----  The ending of the problem place. -----");
+            logger.TraceInformation("--------------------------------------------");
+
+            InitializeComponent();           
             
         }
 

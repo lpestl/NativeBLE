@@ -32,11 +32,7 @@ namespace NativeBLE.Droid.Native
         public static String BATTERY_NOTIFICATION_HANDLE = "00002a19-0000-1000-8000-00805f9b34fb";
         public static String FIRMWARE_VERSION_HANDLE = "00002a27-0000-1000-8000-00805f9b34fb";
         public static String BATCH_VERSION_HANDLE = "00002a26-0000-1000-8000-00805f9b34fb";
-
-
-        //public static String HEART_RATE_MEASUREMENT = "0000AA40-0000-1000-8000-00805f9b34fb";
-        //public static String CLIENT_CHARACTERISTIC_CONFIG = "0000AA41-0000-1000-8000-00805F9B34FB";
-
+        
         public SampleGattAttributes() {
             // Sample Services.
             attributes["0000180d-0000-1000-8000-00805f9b34fb"] = "Heart Rate Service";
@@ -47,7 +43,7 @@ namespace NativeBLE.Droid.Native
             attributes["00002a29-0000-1000-8000-00805f9b34fb"] = "Manufacturer Name String";
         }
 
-        public String lookup(String uuid, String defaultName)
+        public String Lookup(String uuid, String defaultName)
         {
             String name = attributes[uuid];
             return name == null ? defaultName : name;

@@ -3,8 +3,9 @@
 open Xamarin.Forms
 open System
 open System.Collections.ObjectModel
+open System.Linq.Expressions
 
-type SensorViewModel(device: DeviceViewModel, i: int) =
+type SensorViewModel(device: DeviceViewModel) =
     inherit BaseViewModel()
 
     let logger = DependencyService.Get<ILogger>()
@@ -14,13 +15,8 @@ type SensorViewModel(device: DeviceViewModel, i: int) =
     let deviceViewModel = device
     let sensorData = SensorData()
     
-    let mutable index = i
     let mutable mConnected = false
     let mutable mToolBarButtonText = "Connect"
-    //let mutable mConnectionState = "Disconnected"
-    //let mutable mDataField = String.Empty
-    //let mutable mSensorAField = "No data"
-    //let mutable mSensorBField = "No data"
     let mutable mDebug = String.Empty
 
     // Result button
@@ -28,22 +24,19 @@ type SensorViewModel(device: DeviceViewModel, i: int) =
     let mutable mTextResultButton = ""
     let mutable mColorResultButton = Color.Gray
     // Start button
-    let mutable mEnableStartButton = false
+    //let mutable mEnableStartButton = false
     let mutable mTextStartButton = "Disconnected"
     let mutable mColorTextStartButton = Color.Black
 
     let mutable mSleeveModeText = "Sleeve mode (>800 release)"
-    //let mutable mSwitch = true
-    //let mutable mBataryLevelText = "N/A"
-    //let mutable mBatchVersionText = "N/A"
-    //let mutable mRSSIText = "N/A"
-    //let mutable mFirmwareText = "N/A"
-    //let mutable mSensorAUPresult = "N/A"
-    //let mutable mSensorADownresult = "N/A"
-    //let mutable mSensorBUPresult = "N/A"
-    //let mutable mSensorBDownresult = "N/A"
     
-    member val bDisconnectionWatchFlag = true with get, set
+    let mutable mConnectionTimeString = String.Format("{0:00}.{1:000}", sensorData.ConnectionTimeSpan.Seconds, sensorData.ConnectionTimeSpan.Milliseconds)
+    let mutable mFirstDataTimeString = String.Format("{0:00}.{1:000}", sensorData.FirstDataTimeSpan.Seconds, sensorData.FirstDataTimeSpan.Milliseconds)
+    let mutable mDisconnectionTimeString = String.Format("{0:00}.{1:000}", sensorData.DisconnectionTimeSpan.Seconds, sensorData.DisconnectionTimeSpan.Milliseconds)
+    let mutable mConnectionTimeColor = Color.Green
+    let mutable mFirstDataTimeColor = Color.Green
+    let mutable mDisconnectionTimeColor = Color.Green
+
 
     member x.Name with get() = deviceViewModel.Name
     member x.Address with get() = deviceViewModel.Address
@@ -75,14 +68,14 @@ type SensorViewModel(device: DeviceViewModel, i: int) =
         and set value =
             sensorData.ConnectionState <- value
             x.TextStart <- "Start"
-            x.EnableStart <- true
+            //x.EnableStart <- true
             base.OnPropertyChanged <@ x.ConnectionState @>
 
-    member x.EnableStart 
-        with get() = mEnableStartButton
-        and set value =
-            mEnableStartButton <- value
-            base.OnPropertyChanged <@ x.EnableStart @>    
+    //member x.EnableStart 
+    //    with get() = mEnableStartButton
+    //    and set value =
+    //        mEnableStartButton <- value
+    //        base.OnPropertyChanged <@ x.EnableStart @>    
 
     member x.TextStart 
         with get() = mTextStartButton
@@ -210,3 +203,78 @@ type SensorViewModel(device: DeviceViewModel, i: int) =
                 mConnected <- true
                 
             base.OnPropertyChanged <@ x.ConnectedStateText @>
+
+     member x.ConnectionTimeString
+        with get() = mConnectionTimeString
+        and set value =
+            mConnectionTimeString <- value
+            base.OnPropertyChanged <@ x.ConnectionTimeString @>
+
+     member x.FirstDataTimeString
+        with get() = mFirstDataTimeString
+        and set value = 
+            mFirstDataTimeString <- value
+            base.OnPropertyChanged <@ x.FirstDataTimeString @>
+
+     member x.DisconnectionTimeString
+        with get() = mDisconnectionTimeString
+        and set value = 
+            mDisconnectionTimeString <- value
+            base.OnPropertyChanged <@ x.DisconnectionTimeString @>
+
+     member x.ConnectionTimeColor
+        with get() = mConnectionTimeColor
+        and set value =
+            mConnectionTimeColor <- value
+            base.OnPropertyChanged <@ x.ConnectionTimeColor @>
+
+     member x.FirstDataTimeColor
+        with get() = mFirstDataTimeColor
+        and set value = 
+            mFirstDataTimeColor <- value
+            base.OnPropertyChanged <@ x.FirstDataTimeColor @>
+
+     member x.DisconnectionTimeColor
+        with get() = mDisconnectionTimeColor
+        and set value =
+            mDisconnectionTimeColor <- value
+            base.OnPropertyChanged <@ x.DisconnectionTimeColor @>
+
+     member x.ConnectionTimeSpan 
+        with get() = sensorData.ConnectionTimeSpan
+        and set value =
+            sensorData.ConnectionTimeSpan <- value
+            x.ConnectionTimeString <- String.Format("{0:00}.{1:000}", sensorData.ConnectionTimeSpan.Seconds, sensorData.ConnectionTimeSpan.Milliseconds)
+            if sensorData.ConnectionTimeSpan.Seconds < 3 then
+                x.ConnectionTimeColor <- Color.Green
+            elif sensorData.ConnectionTimeSpan.Seconds < 9 then
+                x.ConnectionTimeColor <- Color.Orange
+            else 
+                x.ConnectionTimeColor <- Color.Red
+            base.OnPropertyChanged <@ x.ConnectionTimeSpan @>
+
+     member x.FirstDataTimeSpan
+        with get() = sensorData.FirstDataTimeSpan
+        and set value =
+            sensorData.FirstDataTimeSpan <- value
+            x.FirstDataTimeString <- String.Format("{0:00}.{1:000}", sensorData.FirstDataTimeSpan.Seconds, sensorData.FirstDataTimeSpan.Milliseconds)
+            if sensorData.FirstDataTimeSpan.Seconds < 3 then
+                x.FirstDataTimeColor <- Color.Green
+            elif sensorData.FirstDataTimeSpan.Seconds < 9 then
+                x.FirstDataTimeColor <- Color.Orange
+            else 
+                x.FirstDataTimeColor <- Color.Red
+            base.OnPropertyChanged <@ x.FirstDataTimeSpan @>
+
+     member x.DisconnectionTimeSpan
+        with get() = sensorData.DisconnectionTimeSpan
+        and set value =
+            sensorData.DisconnectionTimeSpan <- value
+            x.DisconnectionTimeString <- String.Format("{0:00}.{1:000}", sensorData.DisconnectionTimeSpan.Seconds, sensorData.DisconnectionTimeSpan.Milliseconds)
+            if sensorData.DisconnectionTimeSpan.Seconds < 3 then
+                x.DisconnectionTimeColor <- Color.Green
+            elif sensorData.DisconnectionTimeSpan.Seconds < 9 then
+                x.DisconnectionTimeColor <- Color.Orange
+            else 
+                x.DisconnectionTimeColor <- Color.Red
+            base.OnPropertyChanged <@ x.DisconnectionTimeSpan @>

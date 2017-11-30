@@ -41,17 +41,17 @@ namespace NativeBLE.Droid.Native
 
         public void TraceError(string value)
         {
-            Log.Error(TAG, value);
+            Log.Error(TAG, String.Format("[ERROR] {0}", value));
         }
 
         public void TraceInformation(string value)
         {
-            Log.Info(TAG, value);
+            Log.Info(TAG, String.Format("[INFO] {0}", value));
         }
 
         public void TraceWarning(string value)
         {
-            Log.Warn(TAG, value);
+            Log.Warn(TAG, String.Format("[WARNING] {0}", value));
         }
     }
 }
