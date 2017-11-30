@@ -149,6 +149,12 @@ namespace NativeBLE.Droid.Backend
 
         public void ScanLeDevice()
         {
+            if (bluetoothAdapter == null)
+            {
+                logger.TraceWarning("Turn on the bluetooth adapter before you begin scanning.");
+                return;
+            }
+
             mHandler.PostDelayed(scanerCallback, SCAN_PERIOD);
 
             scannerViewModel.Scanning = true;

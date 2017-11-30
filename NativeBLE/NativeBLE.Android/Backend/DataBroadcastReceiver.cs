@@ -43,8 +43,8 @@ namespace NativeBLE.Droid.Backend
             if (SensorService.ACTION_GATT_CONNECTED.Equals(action))
             {
                 parent.LogEcho("Connection Event: Device Connected");
-                parent.SensorView.Connected = true;
-                parent.SensorView.EnableStart = true;
+                //parent.SensorView.Connected = true;
+                //parent.SensorView.EnableStart = true;
                 parent.UpdateConnectionState("Connecting...");
             }
             else if (SensorService.ACTION_GATT_DISCONNECTED.Equals(action))
@@ -53,8 +53,7 @@ namespace NativeBLE.Droid.Backend
                 
                 if (parent.sensorService != null) parent.sensorService.Close();
                 else logger.TraceInformation("SensorService null at disconnetion");
-
-                parent.SensorView.EnableStart = false;
+                
                 parent.LogEcho("Disconnection Event: Device Disconnected");
                 parent.SensorView.ColorStart = Xamarin.Forms.Color.Black;
                 parent.UpdateConnectionState("Disconnected");
@@ -69,7 +68,7 @@ namespace NativeBLE.Droid.Backend
 
                 parent.FindPressureService(parent.sensorService.GetSupportedGattServices());
             }
-            else if (BluetoothLeService.ACTION_DATA_AVAILABLE.Equals(action))
+            else if (SensorService.ACTION_DATA_AVAILABLE.Equals(action))
             {
                 logger.TraceInformation("Data available");
                 parent.UpdateConnectionState("Connected");
@@ -84,10 +83,10 @@ namespace NativeBLE.Droid.Backend
 
                 parent.test.SetRecord();
             }
-            else if (BluetoothLeService.RSSI_DATA_AVAILABLE.Equals(action))
+            else if (SensorService.RSSI_DATA_AVAILABLE.Equals(action))
             {
                 String srssi;
-                srssi = intent.GetStringExtra(BluetoothLeService.EXTRA_RSSI_DATA);
+                srssi = intent.GetStringExtra(SensorService.EXTRA_RSSI_DATA);
                 parent.DisplayRssiData(srssi);
             }
         }

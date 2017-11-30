@@ -58,7 +58,7 @@ namespace NativeBLE.Droid
             base.OnStart();
             logger.TraceInformation("MainActivity called OnStart and BindService");
             MessagingCenter.Send<MainActivity>(this, "OnStart");
-        }
+        }        
     }
 }
 

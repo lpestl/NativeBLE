@@ -1,5 +1,7 @@
 ﻿namespace NativeBLE.Core
 
+open System
+
 type SensorData() =
     member val ConnectionState = "Disconnected" with get, set
     member val SleeveMode = true with get,set
@@ -14,4 +16,6 @@ type SensorData() =
     member val SensorA_BottomResult = "N/A" with get, set
     member val SensorB_TopResult = "N/A" with get, set
     member val SensorB_BottomResult = "N/A" with get, set
-
+    member val ConnectionTimeSpan = TimeSpan.Zero with get, set
+    member val FirstDataTimeSpan = TimeSpan.Zero with get, set
+    member val DisconnectionTimeSpan = TimeSpan.Zero with get, set

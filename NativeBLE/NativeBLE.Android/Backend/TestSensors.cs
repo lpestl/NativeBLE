@@ -207,6 +207,7 @@ namespace NativeBLE.Droid.Backend
                         parent.alertDialogSensorA.SetTitle("SENSOR A: Apply the pressure");
                         parent.alertDialogSensorB.SetTitle("Keep on applying pressure");
                         parent.alertDialogSensorB.Dismiss();
+                        parent.alertDialogSensorA.Show();
                         break;
                     case 1:
                         parent.alertDialogSensorA.SetTitle("SENSOR A: Release the pressure");
@@ -215,6 +216,7 @@ namespace NativeBLE.Droid.Backend
                         average_measurement[0, 0] = measurement[2];
                         parent.parent.SensorView.SensorA_TopResult = average_measurement[0, 0].ToString();
                         parent.alertDialogSensorB.Dismiss();
+                        parent.alertDialogSensorA.Show();
                         break;
                     case 2:
                         parent.alertDialogSensorA.SetTitle("SENSOR B: Apply the pressure");
@@ -224,6 +226,7 @@ namespace NativeBLE.Droid.Backend
                         average_measurement[1, 0] = measurement[2];
                         parent.parent.SensorView.SensorA_BottomResult = average_measurement[1, 0].ToString();
                         parent.alertDialogSensorB.Dismiss();
+                        parent.alertDialogSensorA.Show();
                         break;
                     case 3:
                         parent.alertDialogSensorA.SetTitle("SENSOR B: Release the pressure");
@@ -232,6 +235,7 @@ namespace NativeBLE.Droid.Backend
                         average_measurement[0, 1] = measurement[2];
                         parent.parent.SensorView.SensorB_TopResult = average_measurement[0, 1].ToString();
                         parent.alertDialogSensorB.Dismiss();
+                        parent.alertDialogSensorA.Show();
                         break;
                     case 4:
                         itrTest = 0;

@@ -75,7 +75,7 @@ namespace NativeBLE.Core.Forms
 
                 deviceScanner.StopScan();
 
-                await DisplayAlert($"Выбранно устройство {index}", $"{device.Name} - {device.Address}", "OK");
+                //await DisplayAlert($"Выбранно устройство {index}", $"{device.Name} - {device.Address}", "OK");
                 await Navigation.PushAsync(new SensorDataPage(device));
             }
         }

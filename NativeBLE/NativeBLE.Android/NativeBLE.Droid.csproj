@@ -17,8 +17,8 @@
     <AndroidResgenFile>Resources\Resource.Designer.cs</AndroidResgenFile>
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
     <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
-    <AndroidUseLatestPlatformSdk>false</AndroidUseLatestPlatformSdk>
-    <TargetFrameworkVersion>v6.0</TargetFrameworkVersion>
+    <AndroidUseLatestPlatformSdk>true</AndroidUseLatestPlatformSdk>
+    <TargetFrameworkVersion>v8.0</TargetFrameworkVersion>
     <AndroidStoreUncompressedFileExtensions />
     <MandroidI18n />
     <JavaMaximumHeapSize />
@@ -63,7 +63,6 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.ObjectModel" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml" />
     <Reference Include="Xamarin.Android.Support.Animated.Vector.Drawable, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -131,11 +130,7 @@
     <Compile Include="Backend\ServiceBluetothGattCallback.cs" />
     <Compile Include="Backend\TestSensors.cs" />
     <Compile Include="MainActivity.cs" />
-    <Compile Include="Native\BluetoothLeService.cs" />
     <Compile Include="Backend\Logger.cs" />
-    <Compile Include="Native\NativeDeviceList.cs" />
-    <Compile Include="Native\NativeDeviceScaner.cs" />
-    <Compile Include="Native\NativeSensorData.cs" />
     <Compile Include="Backend\SampleGattAttributes.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

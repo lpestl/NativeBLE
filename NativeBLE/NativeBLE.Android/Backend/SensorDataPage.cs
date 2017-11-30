@@ -14,6 +14,7 @@ using NativeBLE.Droid.Native;
 using Android.Bluetooth;
 using Xamarin.Forms;
 using Java.Util;
+using System.Diagnostics;
 
 [assembly: Xamarin.Forms.Dependency(typeof(NativeBLE.Droid.Backend.SensorDataPage))]
 namespace NativeBLE.Droid.Backend
@@ -39,6 +40,11 @@ namespace NativeBLE.Droid.Backend
         private DataBroadcastReceiver dataBroadcastReceiver;
         public static SensorDataPage Instance = null;
 
+        public Stopwatch connectionStopwatch = new Stopwatch();
+        public Stopwatch firstDataStopwatch = new Stopwatch();
+        public Stopwatch disconnectionStopwatch = new Stopwatch();
+        public bool firstData = false;
+        
         public SensorDataPage()
         {
             logger.TAG = "SensorDataPage";
@@ -138,7 +144,7 @@ namespace NativeBLE.Droid.Backend
                 UpdateConnectionState("Reading services");
                 LogEcho("Loop through all services");
 
-                if (BluetoothLeService.UUID_PRESSURE_SERVICE.Equals(gattService.Uuid))
+                if (SensorService.UUID_PRESSURE_SERVICE.Equals(gattService.Uuid))
                 {
                     LogEcho("Found Pressure Service");
 
@@ -216,6 +222,11 @@ namespace NativeBLE.Droid.Backend
             {
                 bool result = sensorService.Connect(currentDevice.Address);
             }
+        }
+
+        ~SensorDataPage()
+        {
+            OnDestroy();
         }
     }
 }

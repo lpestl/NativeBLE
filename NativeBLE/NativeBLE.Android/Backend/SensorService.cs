@@ -14,6 +14,7 @@ using Xamarin.Forms;
 using NativeBLE.Droid.Native;
 using Android.Bluetooth;
 using Java.Util;
+using System.Threading;
 
 namespace NativeBLE.Droid.Backend
 {
@@ -29,6 +30,7 @@ namespace NativeBLE.Droid.Backend
         public String bluetoothDeviceAddress;
         public BluetoothGatt bluetoothGatt;
         public ProfileState connectionState = ProfileState.Disconnected;
+        public static ProgressDialog progressDialog;
 
         public static String ACTION_GATT_CONNECTED =            "com.lpestl.bluetooth.le.ACTION_GATT_CONNECTED";
         public static String ACTION_GATT_DISCONNECTED =         "com.lpestl.bluetooth.le.ACTION_GATT_DISCONNECTED";
@@ -123,6 +125,7 @@ namespace NativeBLE.Droid.Backend
          */
         public bool Connect(String address)
         {
+            logger.TraceInformation("Try connect to device");
             if (bluetoothAdapter == null || address == null)
             {
                 logger.TraceWarning("BluetoothAdapter not initialized or unspecified address.");
@@ -143,8 +146,16 @@ namespace NativeBLE.Droid.Backend
             logger.TraceInformation("Trying to create a new connection.");
             bluetoothDeviceAddress = address;
             connectionState = ProfileState.Connecting;
-            if (SensorDataPage.Instance != null) SensorDataPage.Instance.SensorView.ConnectionState = "Connecting...";
+            if (SensorDataPage.Instance != null)
+            {
+                SensorDataPage.Instance.connectionStopwatch.Reset();
+                SensorDataPage.Instance.connectionStopwatch.Start();
+                //SensorDataPage.Instance.firstDataStopwatch.Start();
+                SensorDataPage.Instance.SensorView.ConnectionState = "Connecting...";
+            }
 
+            progressDialog = ProgressDialog.Show(thisActivity, "Please wait...", "Connecting...", true);
+            
             return true;
         }
 
@@ -156,12 +167,31 @@ namespace NativeBLE.Droid.Backend
          */
         public void Disconnect()
         {
+            logger.TraceInformation("Try disconnect");
             if (bluetoothAdapter == null || bluetoothGatt == null)
             {
                 logger.TraceWarning("BluetoothAdapter not initialized");
                 return;
             }
+            SensorDataPage.Instance.disconnectionStopwatch.Reset();
+            SensorDataPage.Instance.disconnectionStopwatch.Start();
+            progressDialog = ProgressDialog.Show(thisActivity, "Please wait...", "Disconnecting...", true);
             bluetoothGatt.Disconnect();
+        }
+
+        public void HideProgressDialog()
+        {
+            new Thread(new ThreadStart(delegate {
+                //HIDE PROGRESS DIALOG
+                thisActivity.RunOnUiThread(() => {
+                    if (progressDialog != null)
+                    {
+                        progressDialog.Hide();
+                        progressDialog.Dismiss();
+                        //progressDialog = null;
+                    }
+                    });
+            })).Start();
         }
 
         /**
