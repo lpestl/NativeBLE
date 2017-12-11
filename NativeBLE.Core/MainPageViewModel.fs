@@ -14,6 +14,7 @@ type MainPageViewModel() =
     
     let mutable scanning = false 
     let mutable scanButtonText = "Scan"
+    let mutable stringDebug = "Used"
 
     member x.Scanning 
         with get() = scanning
@@ -33,3 +34,9 @@ type MainPageViewModel() =
         and set value =
             scanButtonText <- value
             base.OnPropertyChanged <@ x.ScanButtonText @>
+
+    member x.StringDebug
+        with get() = stringDebug
+        and set value = 
+            stringDebug <- value
+            base.OnPropertyChanged <@ x.StringDebug @>

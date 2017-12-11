@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27004.2009
+VisualStudioVersion = 15.0.27004.2010
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NativeBLE.Droid", "NativeBLE\NativeBLE.Android\NativeBLE.Droid.csproj", "{82351901-60A3-4859-BBFD-C0043D7FDCBD}"
 EndProject
@@ -32,6 +32,12 @@ Global
 		Debug|iPhoneSimulator = Debug|iPhoneSimulator
 		Debug|x64 = Debug|x64
 		Debug|x86 = Debug|x86
+		FastDebugging|Any CPU = FastDebugging|Any CPU
+		FastDebugging|ARM = FastDebugging|ARM
+		FastDebugging|iPhone = FastDebugging|iPhone
+		FastDebugging|iPhoneSimulator = FastDebugging|iPhoneSimulator
+		FastDebugging|x64 = FastDebugging|x64
+		FastDebugging|x86 = FastDebugging|x86
 		Release|Any CPU = Release|Any CPU
 		Release|ARM = Release|ARM
 		Release|iPhone = Release|iPhone
@@ -94,6 +100,24 @@ Global
 		{82351901-60A3-4859-BBFD-C0043D7FDCBD}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{82351901-60A3-4859-BBFD-C0043D7FDCBD}.Debug|x86.Build.0 = Debug|Any CPU
 		{82351901-60A3-4859-BBFD-C0043D7FDCBD}.Debug|x86.Deploy.0 = Debug|Any CPU
+		{82351901-60A3-4859-BBFD-C0043D7FDCBD}.FastDebugging|Any CPU.ActiveCfg = Debug|Any CPU
+		{82351901-60A3-4859-BBFD-C0043D7FDCBD}.FastDebugging|Any CPU.Build.0 = Debug|Any CPU
+		{82351901-60A3-4859-BBFD-C0043D7FDCBD}.FastDebugging|Any CPU.Deploy.0 = Debug|Any CPU
+		{82351901-60A3-4859-BBFD-C0043D7FDCBD}.FastDebugging|ARM.ActiveCfg = Debug|Any CPU
+		{82351901-60A3-4859-BBFD-C0043D7FDCBD}.FastDebugging|ARM.Build.0 = Debug|Any CPU
+		{82351901-60A3-4859-BBFD-C0043D7FDCBD}.FastDebugging|ARM.Deploy.0 = Debug|Any CPU
+		{82351901-60A3-4859-BBFD-C0043D7FDCBD}.FastDebugging|iPhone.ActiveCfg = Debug|Any CPU
+		{82351901-60A3-4859-BBFD-C0043D7FDCBD}.FastDebugging|iPhone.Build.0 = Debug|Any CPU
+		{82351901-60A3-4859-BBFD-C0043D7FDCBD}.FastDebugging|iPhone.Deploy.0 = Debug|Any CPU
+		{82351901-60A3-4859-BBFD-C0043D7FDCBD}.FastDebugging|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{82351901-60A3-4859-BBFD-C0043D7FDCBD}.FastDebugging|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{82351901-60A3-4859-BBFD-C0043D7FDCBD}.FastDebugging|iPhoneSimulator.Deploy.0 = Debug|Any CPU
+		{82351901-60A3-4859-BBFD-C0043D7FDCBD}.FastDebugging|x64.ActiveCfg = Debug|Any CPU
+		{82351901-60A3-4859-BBFD-C0043D7FDCBD}.FastDebugging|x64.Build.0 = Debug|Any CPU
+		{82351901-60A3-4859-BBFD-C0043D7FDCBD}.FastDebugging|x64.Deploy.0 = Debug|Any CPU
+		{82351901-60A3-4859-BBFD-C0043D7FDCBD}.FastDebugging|x86.ActiveCfg = Debug|Any CPU
+		{82351901-60A3-4859-BBFD-C0043D7FDCBD}.FastDebugging|x86.Build.0 = Debug|Any CPU
+		{82351901-60A3-4859-BBFD-C0043D7FDCBD}.FastDebugging|x86.Deploy.0 = Debug|Any CPU
 		{82351901-60A3-4859-BBFD-C0043D7FDCBD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{82351901-60A3-4859-BBFD-C0043D7FDCBD}.Release|Any CPU.Build.0 = Release|Any CPU
 		{82351901-60A3-4859-BBFD-C0043D7FDCBD}.Release|Any CPU.Deploy.0 = Release|Any CPU
@@ -148,6 +172,18 @@ Global
 		{3E9D4422-CC16-4C2E-BA53-A559423E19EE}.Debug|x64.Build.0 = Debug|Any CPU
 		{3E9D4422-CC16-4C2E-BA53-A559423E19EE}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{3E9D4422-CC16-4C2E-BA53-A559423E19EE}.Debug|x86.Build.0 = Debug|Any CPU
+		{3E9D4422-CC16-4C2E-BA53-A559423E19EE}.FastDebugging|Any CPU.ActiveCfg = Debug|Any CPU
+		{3E9D4422-CC16-4C2E-BA53-A559423E19EE}.FastDebugging|Any CPU.Build.0 = Debug|Any CPU
+		{3E9D4422-CC16-4C2E-BA53-A559423E19EE}.FastDebugging|ARM.ActiveCfg = Debug|Any CPU
+		{3E9D4422-CC16-4C2E-BA53-A559423E19EE}.FastDebugging|ARM.Build.0 = Debug|Any CPU
+		{3E9D4422-CC16-4C2E-BA53-A559423E19EE}.FastDebugging|iPhone.ActiveCfg = Debug|Any CPU
+		{3E9D4422-CC16-4C2E-BA53-A559423E19EE}.FastDebugging|iPhone.Build.0 = Debug|Any CPU
+		{3E9D4422-CC16-4C2E-BA53-A559423E19EE}.FastDebugging|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{3E9D4422-CC16-4C2E-BA53-A559423E19EE}.FastDebugging|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{3E9D4422-CC16-4C2E-BA53-A559423E19EE}.FastDebugging|x64.ActiveCfg = Debug|Any CPU
+		{3E9D4422-CC16-4C2E-BA53-A559423E19EE}.FastDebugging|x64.Build.0 = Debug|Any CPU
+		{3E9D4422-CC16-4C2E-BA53-A559423E19EE}.FastDebugging|x86.ActiveCfg = Debug|Any CPU
+		{3E9D4422-CC16-4C2E-BA53-A559423E19EE}.FastDebugging|x86.Build.0 = Debug|Any CPU
 		{3E9D4422-CC16-4C2E-BA53-A559423E19EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3E9D4422-CC16-4C2E-BA53-A559423E19EE}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3E9D4422-CC16-4C2E-BA53-A559423E19EE}.Release|ARM.ActiveCfg = Release|Any CPU
@@ -196,6 +232,18 @@ Global
 		{A4FF3D3F-5808-48FD-A4E6-EC161166BDC9}.Debug|x64.Build.0 = Debug|Any CPU
 		{A4FF3D3F-5808-48FD-A4E6-EC161166BDC9}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{A4FF3D3F-5808-48FD-A4E6-EC161166BDC9}.Debug|x86.Build.0 = Debug|Any CPU
+		{A4FF3D3F-5808-48FD-A4E6-EC161166BDC9}.FastDebugging|Any CPU.ActiveCfg = Debug|Any CPU
+		{A4FF3D3F-5808-48FD-A4E6-EC161166BDC9}.FastDebugging|Any CPU.Build.0 = Debug|Any CPU
+		{A4FF3D3F-5808-48FD-A4E6-EC161166BDC9}.FastDebugging|ARM.ActiveCfg = Debug|Any CPU
+		{A4FF3D3F-5808-48FD-A4E6-EC161166BDC9}.FastDebugging|ARM.Build.0 = Debug|Any CPU
+		{A4FF3D3F-5808-48FD-A4E6-EC161166BDC9}.FastDebugging|iPhone.ActiveCfg = Debug|Any CPU
+		{A4FF3D3F-5808-48FD-A4E6-EC161166BDC9}.FastDebugging|iPhone.Build.0 = Debug|Any CPU
+		{A4FF3D3F-5808-48FD-A4E6-EC161166BDC9}.FastDebugging|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{A4FF3D3F-5808-48FD-A4E6-EC161166BDC9}.FastDebugging|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{A4FF3D3F-5808-48FD-A4E6-EC161166BDC9}.FastDebugging|x64.ActiveCfg = Debug|Any CPU
+		{A4FF3D3F-5808-48FD-A4E6-EC161166BDC9}.FastDebugging|x64.Build.0 = Debug|Any CPU
+		{A4FF3D3F-5808-48FD-A4E6-EC161166BDC9}.FastDebugging|x86.ActiveCfg = Debug|Any CPU
+		{A4FF3D3F-5808-48FD-A4E6-EC161166BDC9}.FastDebugging|x86.Build.0 = Debug|Any CPU
 		{A4FF3D3F-5808-48FD-A4E6-EC161166BDC9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A4FF3D3F-5808-48FD-A4E6-EC161166BDC9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A4FF3D3F-5808-48FD-A4E6-EC161166BDC9}.Release|ARM.ActiveCfg = Release|Any CPU

@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using NativeBLE.Core;
 using NativeBLE.Core.Forms;
+using Plugin.BLE;
+using Plugin.BLE.Abstractions.Contracts;
 
 namespace NativeBLE.Core.Forms
 {
@@ -13,18 +15,84 @@ namespace NativeBLE.Core.Forms
     {
         private ILogger logger;
         private MainPageViewModel mainPageViewModel = new MainPageViewModel();
-        private IDeviceScanner deviceScanner = DependencyService.Get<IDeviceScanner>();
+
+        private IDeviceScanner deviceScanner;// = DependencyService.Get<IDeviceScanner>();
+
+        private ConnectionAlgorithmViewModel connectionAlgorithmVM = new ConnectionAlgorithmViewModel();
+        private ConnectionAlgorithm connectionAlgorithm = new ConnectionAlgorithm();
+
+        private IBluetoothLE ble;
+        private IAdapter adapter;
 
         public MainPage()
         {
             logger = DependencyService.Get<ILogger>();
             logger.TAG = "MainPage";
 
+            logger.TraceInformation(String.Format("Current algorithm: {0}", connectionAlgorithm.Algorithm.ToString()));
+
             this.BindingContext = mainPageViewModel;
 
             InitializeComponent();
             Title = "Bluetooth LE Scanner";
 
+            ToolbarItems.Add(new ToolbarItem("Settings", "settings.png", async () => { await Navigation.PushAsync(new ChoiceAlgorithm(connectionAlgorithmVM)); }));
+
+            connectionAlgorithmVM.AlgorithmSelected += ConnectionAlgorithmVM_AlgorithmSelected;
+
+            Init();
+
+            mainPageViewModel.StringDebug = "Used: Native alg.; Mode: standart";
+        }
+
+        public void Init()
+        {
+            logger.TraceInformation("Clear last algorithm");
+            deviceScanner = null;
+
+            if (ble != null)
+            {
+                ble.StateChanged -= Ble_StateChanged;
+                ble = null;
+            }
+            if (adapter != null)
+            {
+                adapter = null;
+            }
+
+            if (connectionAlgorithm.Algorithm == ConnectionAlgorithmType.Native)
+            {
+                logger.TraceInformation("Init Native");
+                NativeDeviceScannerInit();
+            }
+            else if (connectionAlgorithm.Algorithm == ConnectionAlgorithmType.PluginBLE)
+            {
+                logger.TraceInformation("Init Plugin BLE");
+                PluginBleInit();
+            }
+            else if (connectionAlgorithm.Algorithm == ConnectionAlgorithmType.CombineNativeAndCross)
+            {
+                logger.TraceInformation("Init combine Native /& Ble Cross");
+                // CombineNativeAndBleCrossInit();
+            }
+        }
+
+        private void PluginBleInit()
+        {
+            ble = CrossBluetoothLE.Current;
+            adapter = CrossBluetoothLE.Current.Adapter;
+
+            ble.StateChanged += Ble_StateChanged;
+        }
+
+        private void Ble_StateChanged(object sender, Plugin.BLE.Abstractions.EventArgs.BluetoothStateChangedArgs e)
+        {
+            logger.TraceInformation(String.Format("Change blutoth status: {0} from {1}", e.NewState.ToString(), e.OldState.ToString()));
+        }
+
+        public void NativeDeviceScannerInit()
+        {
+            deviceScanner = DependencyService.Get<IDeviceScanner>();
             deviceScanner.Init(mainPageViewModel);
 
             if (deviceScanner.CheckSupportBLE())
@@ -44,18 +112,64 @@ namespace NativeBLE.Core.Forms
             deviceScanner.GetBluetoothAdapter();
         }
 
-        private void OnClick(object sender, EventArgs e)
+        private void ConnectionAlgorithmVM_AlgorithmSelected(object sender, ConnectionAlgorithm args)
+        {
+            connectionAlgorithm = args;
+            logger.TraceInformation(String.Format("Used: {0}; Mode: {1}", connectionAlgorithm.Algorithm.ToString(), "Standart"));
+            mainPageViewModel.StringDebug = String.Format("Used: {0}; Mode: {1}", connectionAlgorithm.Algorithm.ToString(), "Standart");
+            Init();
+        }
+
+        private async void OnClick(object sender, EventArgs e)
         {
             logger.LogInfo("On Click");
             if (mainPageViewModel.Scanning)
             {
-                deviceScanner.StopScan();
+                if (connectionAlgorithm.Algorithm == ConnectionAlgorithmType.Native)
+                {
+                    logger.TraceInformation("Native stop scan");
+                    deviceScanner.StopScan();
+                }
+                else if (connectionAlgorithm.Algorithm == ConnectionAlgorithmType.PluginBLE)
+                {
+                    logger.TraceInformation("Plugin BLE stop scan");
+                    await PluginBleStopScanAsync();
+                }
+                else if (connectionAlgorithm.Algorithm == ConnectionAlgorithmType.CombineNativeAndCross)
+                {
+                    logger.TraceInformation("Combine Native /& Ble Cross stop scan");
+                }
+
                 IsBusy = false;
             } else
             {
-                deviceScanner.ScanLeDevice();
+                if (connectionAlgorithm.Algorithm == ConnectionAlgorithmType.Native)
+                {
+                    logger.TraceInformation("Native start scan");
+                    deviceScanner.ScanLeDevice();
+                }
+                else if (connectionAlgorithm.Algorithm == ConnectionAlgorithmType.PluginBLE)
+                {
+                    logger.TraceInformation("Plugin BLE Start Scan");
+                    PluginBleStartScan();
+                }
+                else if (connectionAlgorithm.Algorithm == ConnectionAlgorithmType.CombineNativeAndCross)
+                {
+                    logger.TraceInformation("Combine Native /& Ble Cross start scan");
+                }
                 IsBusy = true;
             }
+        }
+
+        private void PluginBleStartScan()
+        {
+            adapter.ScanTimeout = 20000;
+
+        }
+
+        private async Task PluginBleStopScanAsync()
+        {
+            await adapter.StartScanningForDevicesAsync();
         }
 
         public async void OnChoiceDevice(object sender, ItemTappedEventArgs e)
@@ -76,8 +190,18 @@ namespace NativeBLE.Core.Forms
                 deviceScanner.StopScan();
 
                 //await DisplayAlert($"Выбранно устройство {index}", $"{device.Name} - {device.Address}", "OK");
-                await Navigation.PushAsync(new SensorDataPage(device));
+                await Navigation.PushAsync(new SensorDataPage(device, connectionAlgorithm));
             }
+        }
+
+        private async Task ToolbarItem_ActivatedAsync(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new ChoiceAlgorithm(connectionAlgorithmVM));
+        }
+
+        ~MainPage()
+        {
+            connectionAlgorithmVM.AlgorithmSelected -= ConnectionAlgorithmVM_AlgorithmSelected;
         }
     }
 }

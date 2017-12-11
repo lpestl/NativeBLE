@@ -17,7 +17,7 @@ namespace NativeBLE.Core.Forms
         private SensorViewModel sensorViewModel;
         private ISensorData nativeSensorData = DependencyService.Get<ISensorData>();
 
-        public SensorDataPage(Device currentDevice)
+        public SensorDataPage(Device currentDevice, ConnectionAlgorithm connectionAlgorithm)
         {
             logger.TAG = "SensorDataPage";
 

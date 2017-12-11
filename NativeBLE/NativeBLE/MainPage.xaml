@@ -30,6 +30,7 @@
                 </ListView.ItemTemplate>
             </ListView>
             <ActivityIndicator IsRunning="{Binding Scanning}" Color="Blue"/>
+            <Label Text="{Binding StringDebug}" FontSize="Small" TextColor="Orange" />
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
