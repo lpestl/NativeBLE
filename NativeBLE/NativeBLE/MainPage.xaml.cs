@@ -22,6 +22,7 @@ namespace NativeBLE.Core.Forms
 
         private Device device;
         private IDevice idevice;
+        private MixedDeviceData mdevice;
 
         private ConnectionAlgorithmViewModel connectionAlgorithmVM = new ConnectionAlgorithmViewModel();
         private ConnectionAlgorithm connectionAlgorithm = new ConnectionAlgorithm();
@@ -45,7 +46,7 @@ namespace NativeBLE.Core.Forms
 
             ToolbarItems.Add(new ToolbarItem("Settings", "settings.png", async () => { await Navigation.PushAsync(new ChoiceAlgorithm(connectionAlgorithmVM)); }));
 
-            mainPageViewModel.StringDebug = "Used: Native; Mode: standart";
+            mainPageViewModel.StringDebug = $"Used: {connectionAlgorithm.Algorithm.ToString()}; Mode: standart";
             connectionAlgorithmVM.AlgorithmSelected += ConnectionAlgorithmVM_AlgorithmSelected;
 
             // Bluetooth init
@@ -82,7 +83,7 @@ namespace NativeBLE.Core.Forms
             else if (connectionAlgorithm.Algorithm == ConnectionAlgorithmType.CombineNativeAndCross)
             {
                 logger.TraceInformation("Init combine Native /& Ble Cross");
-                // CombineNativeAndBleCrossInit();
+                NativeDeviceScannerInit();
             }
         }
 
@@ -129,7 +130,7 @@ namespace NativeBLE.Core.Forms
                 else if (connectionAlgorithm.Algorithm == ConnectionAlgorithmType.CombineNativeAndCross)
                 {
                     logger.TraceInformation("Combine Native /& Ble Cross stop scan");
-                    // TODO: Stop combine alg
+                    deviceScanner.StopScan();
                 }
 
                 IsBusy = false;
@@ -149,7 +150,7 @@ namespace NativeBLE.Core.Forms
                 else if (connectionAlgorithm.Algorithm == ConnectionAlgorithmType.CombineNativeAndCross)
                 {
                     logger.TraceInformation("Combine Native /& Ble Cross start scan");
-                    // TODO: Start combine alg
+                    deviceScanner.ScanLeDevice();
                 }
                 IsBusy = true;
             }
@@ -180,13 +181,15 @@ namespace NativeBLE.Core.Forms
                 }
                 else if (connectionAlgorithm.Algorithm == ConnectionAlgorithmType.CombineNativeAndCross)
                 {
-                    // TODO: Get combine device
+                    device = deviceScanner.GetDevice(index);
+                    mdevice = deviceScanner.GetMixedDeviceData(index);
+                    deviceScanner.StopScan();
                 }
 
                 logger.TraceInformation($"Finded device on native devices list : {index} - {device.Address}");
                 
                 //await DisplayAlert($"Выбранно устройство {index}", $"{device.Name} - {device.Address}", "OK");
-                await Navigation.PushAsync(new SensorDataPage(device, idevice, index, connectionAlgorithm));
+                await Navigation.PushAsync(new SensorDataPage(device, idevice, mdevice, index, connectionAlgorithm));
             }
         }
 

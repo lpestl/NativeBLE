@@ -17,6 +17,7 @@ using Plugin.BLE;
 using Plugin.BLE.Abstractions.EventArgs;
 using Plugin.BLE.Abstractions.Exceptions;
 using System.Threading;
+using Android.Bluetooth;
 
 [assembly: Xamarin.Forms.Dependency(typeof(NativeBLE.Droid.PluginBLE.PluginSensorData))]
 namespace NativeBLE.Droid.PluginBLE
@@ -74,6 +75,27 @@ namespace NativeBLE.Droid.PluginBLE
             
             ConnectAsync();
         }
+        
+        public void Init(SensorViewModel sensorView, MixedDeviceData device)
+        {
+            sensorViewModel = sensorView;
+
+            thisActivity = Xamarin.Forms.Forms.Context as Activity;
+            test = new TestSensors(thisActivity, sensorViewModel);
+
+            ble = CrossBluetoothLE.Current;
+            adapter = CrossBluetoothLE.Current.Adapter;
+
+            currentDevice = new Plugin.BLE.Android.Device(adapter as Plugin.BLE.Android.Adapter, device.NativeDevice as BluetoothDevice, null, device.Rssi, device.ScanRecord);
+
+            ble.StateChanged += Ble_StateChanged;
+
+            adapter.DeviceConnected += Adapter_DeviceConnectedAsync;
+            adapter.DeviceDisconnected += Adapter_DeviceDisconnected;
+            DisplayRssiData(currentDevice.Rssi.ToString());
+
+            ConnectAsync();
+        }
 
         private void Adapter_DeviceDisconnected(object sender, DeviceEventArgs e)
         {
@@ -103,8 +125,11 @@ namespace NativeBLE.Droid.PluginBLE
             sensorViewModel.ConnectionState = "Connecting...";
             sensorViewModel.TextStart = "Connecting...";
 
+            logger.TraceInformation("GetServiceAsync");
             var service = await currentDevice.GetServiceAsync(Guid.Parse(PRESSURE_SERVICE));
+            logger.TraceInformation("UpdateRssiAsync");
             bool rssiStatus = await currentDevice.UpdateRssiAsync();
+            logger.TraceInformation("GetCharacteristicAsync");
             var characteristic = await service.GetCharacteristicAsync(Guid.Parse(PRESSURE_NOTIFICATION_HANDLE));
             
             firstDataStopwatch.Stop();
@@ -207,13 +232,13 @@ namespace NativeBLE.Droid.PluginBLE
             {
                 logger.TraceError($"Connect exception: {e.Source} - {e.Message}");
             }
-
+            logger.TraceInformation("Connecting succes");
             //HideProgressDialog();
         }
 
         private void Connected()
         {
-            logger.TraceInformation("Success connection");
+            logger.TraceInformation("Connected setup");
             connectionStopwatch.Stop();
             sensorViewModel.ConnectionTimeSpan = connectionStopwatch.Elapsed;
             connectionStopwatch.Reset();
@@ -225,6 +250,7 @@ namespace NativeBLE.Droid.PluginBLE
 
         private void Disconnected()
         {
+            logger.TraceInformation("Disconnected setup");
             disconnectionStopwatch.Stop();
             sensorViewModel.DisconnectionTimeSpan = disconnectionStopwatch.Elapsed;
             disconnectionStopwatch.Reset();
@@ -258,6 +284,7 @@ namespace NativeBLE.Droid.PluginBLE
             }
 
             HideProgressDialog();
+            logger.TraceInformation("Disconnecting succes");
         }
 
         public void HideProgressDialog()

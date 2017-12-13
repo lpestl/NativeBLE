@@ -5,6 +5,7 @@ open Plugin.BLE.Abstractions.Contracts
 
 type IPluginSensorData = 
     abstract member Init: SensorViewModel * IDevice -> unit
+    abstract member Init: SensorViewModel * MixedDeviceData -> unit
 
     abstract member SetMinLimit: int -> unit
 

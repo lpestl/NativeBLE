@@ -18,7 +18,7 @@ type ConnectionAlgorithmType =
         |> Array.map (fun case -> FSharpValue.MakeUnion(case, [||]) :?> ConnectionAlgorithmType)
 
 type ConnectionAlgorithm () =
-    member val Algorithm = ConnectionAlgorithmType.Native with get, set
+    member val Algorithm = ConnectionAlgorithmType.CombineNativeAndCross with get, set
 
 type ConnectionAlgorithmViewModel() =
     inherit BaseViewModel()

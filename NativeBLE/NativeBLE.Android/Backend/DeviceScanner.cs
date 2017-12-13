@@ -17,6 +17,9 @@ using Android.Content.PM;
 using Android.Bluetooth;
 using static Android.Support.V4.App.ActivityCompat;
 using Android.Bluetooth.LE;
+using Plugin.BLE;
+using Plugin.BLE.Abstractions.Contracts;
+using static Plugin.BLE.Android.Adapter;
 
 [assembly: Xamarin.Forms.Dependency(typeof(NativeBLE.Droid.Backend.DeviceScanner))]
 namespace NativeBLE.Droid.Backend
@@ -28,7 +31,7 @@ namespace NativeBLE.Droid.Backend
         private Activity thisActivity;
         private MainPageViewModel scannerViewModel;
         private Action scanerCallback;
-
+        
         private BluetoothAdapter bluetoothAdapter;
         private Handler mHandler = new Handler();
 
@@ -37,6 +40,7 @@ namespace NativeBLE.Droid.Backend
         private static long SCAN_PERIOD = 20000;
 
         private List<Device> devicesList = new List<Device>();
+        private List<MixedDeviceData> mixedDeviceList = new List<MixedDeviceData>();
 
         public static ParcelUuid parcelUuid = ParcelUuid.FromString("0000aa40-0000-1000-8000-00805f9b34fb");        
 
@@ -77,6 +81,7 @@ namespace NativeBLE.Droid.Backend
 
                     // NOTE: This function enables the Bluetooth adapter without requesting permission.
                     //mBluetoothAdapter.Enable();
+                    
                 }
             }
             else
@@ -103,6 +108,7 @@ namespace NativeBLE.Droid.Backend
             {
                 logger.TraceInformation("Cleaning device`s list");
                 devicesList.Clear();
+                mixedDeviceList.Clear();
                 scannerViewModel.Devices.Clear();
             }
 
@@ -118,12 +124,14 @@ namespace NativeBLE.Droid.Backend
         {
             logger.TraceInformation(String.Format("onScanResult: found {0} - {1}", result.Device.Name, result.Device.Address));
             base.OnScanResult(callbackType, result);
-
+            
             var resultDevice = new Device(result.Device.Name, result.Device.Address);
             if (!devicesList.Exists(x => x.Address.Equals(resultDevice.Address)))
             {
                 devicesList.Add(resultDevice);
                 scannerViewModel.Devices.Add(new DeviceViewModel(resultDevice.Name, resultDevice.Address));
+
+                mixedDeviceList.Add(new MixedDeviceData(result.Device, result.Rssi, result.ScanRecord.GetBytes()));
             }
         }
 
@@ -140,6 +148,11 @@ namespace NativeBLE.Droid.Backend
         public Device GetDevice(int value)
         {
             return devicesList[value];
+        }
+
+        public MixedDeviceData GetMixedDeviceData(int value)
+        {
+            return mixedDeviceList[value];
         }
 
         ~DeviceScanner()

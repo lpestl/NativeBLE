@@ -21,7 +21,7 @@ namespace NativeBLE.Core.Forms
         private ISensorData nativeSensorData;
         private IPluginSensorData pluginSensorData;
 
-        public SensorDataPage(Device currentDevice, IDevice idevice, int indexDevice, ConnectionAlgorithm connectionAlgorithm)
+        public SensorDataPage(Device currentDevice, IDevice idevice, MixedDeviceData mdevice, int indexDevice, ConnectionAlgorithm connectionAlgorithm)
         {
             logger.TAG = "SensorDataPage";
 
@@ -29,8 +29,8 @@ namespace NativeBLE.Core.Forms
             sensorViewModel = new SensorViewModel(new DeviceViewModel(currentDevice.Name, currentDevice.Address));
             connectionAlg = connectionAlgorithm;
 
-            Init(sensorViewModel, currentDevice, idevice, indexDevice);
-            
+            Init(sensorViewModel, currentDevice, idevice, mdevice, indexDevice);
+
             this.BindingContext = sensorViewModel;
 
             InitializeComponent();
@@ -38,8 +38,8 @@ namespace NativeBLE.Core.Forms
             logger.TraceInformation("----  The ending of the problem place. -----");
             logger.TraceInformation("--------------------------------------------");            
         }
-
-        private void Init(SensorViewModel sensorViewModel, Device currentDevice, IDevice idevice, int indexDevice)
+        
+        private void Init(SensorViewModel sensorViewModel, Device currentDevice, IDevice idevice, MixedDeviceData mdevice, int indexDevice)
         {
             nativeSensorData = null;
             pluginSensorData = null;
@@ -56,7 +56,8 @@ namespace NativeBLE.Core.Forms
             }
             else if (connectionAlg.Algorithm == ConnectionAlgorithmType.CombineNativeAndCross)
             {
-                // TODO: Combine Init
+                pluginSensorData = DependencyService.Get<IPluginSensorData>();
+                pluginSensorData.Init(sensorViewModel, mdevice);
             }
         }
 
@@ -72,7 +73,7 @@ namespace NativeBLE.Core.Forms
             }
             else if (connectionAlg.Algorithm == ConnectionAlgorithmType.CombineNativeAndCross)
             {
-                // TODO: Combine Init
+                pluginSensorData.OnClickStartButton();
             }
         }
         
@@ -88,7 +89,7 @@ namespace NativeBLE.Core.Forms
             }
             else if (connectionAlg.Algorithm == ConnectionAlgorithmType.CombineNativeAndCross)
             {
-                // TODO: Combine Init
+                pluginSensorData.OnClickResultButton();
             }
         }
 
@@ -98,14 +99,36 @@ namespace NativeBLE.Core.Forms
             {
                 if (nativeSensorData != null)
                 {
-                    nativeSensorData.SetMinLimit(800);
+                    if (connectionAlg.Algorithm == ConnectionAlgorithmType.Native)
+                    {
+                        nativeSensorData.SetMinLimit(800);
+                    }
+                    else if (connectionAlg.Algorithm == ConnectionAlgorithmType.PluginBLE)
+                    {
+                        pluginSensorData.SetMinLimit(800);
+                    }
+                    else if (connectionAlg.Algorithm == ConnectionAlgorithmType.CombineNativeAndCross)
+                    {
+                        pluginSensorData.SetMinLimit(800);
+                    }
                 }
 
             } else
             {
                 if (nativeSensorData != null)
                 {
-                    nativeSensorData.SetMinLimit(0);
+                    if (connectionAlg.Algorithm == ConnectionAlgorithmType.Native)
+                    {
+                        nativeSensorData.SetMinLimit(0);
+                    }
+                    else if (connectionAlg.Algorithm == ConnectionAlgorithmType.PluginBLE)
+                    {
+                        pluginSensorData.SetMinLimit(0);
+                    }
+                    else if (connectionAlg.Algorithm == ConnectionAlgorithmType.CombineNativeAndCross)
+                    {
+                        pluginSensorData.SetMinLimit(0);
+                    }
                 }
             }
         }
@@ -122,8 +145,9 @@ namespace NativeBLE.Core.Forms
             }
             else if (connectionAlg.Algorithm == ConnectionAlgorithmType.CombineNativeAndCross)
             {
-                // TODO: Combine Init
+                pluginSensorData.OnClickConnectButton();
             }
         }
+
     }
 }

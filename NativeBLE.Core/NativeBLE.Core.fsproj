@@ -51,6 +51,7 @@
     <Compile Include="D:\Work\vs\NativeBLE\NativeBLE.Core\BaseTypes.fs" />
     <Compile Include="Device.fs" />
     <Compile Include="MainPageViewModel.fs" />
+    <Compile Include="MixedDeviceData.fs" />
     <Compile Include="IDeviceScanner.fs" />
     <Compile Include="IPluginDeviceScanner.fs" />
     <Compile Include="SensorData.fs" />

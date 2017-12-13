@@ -97,32 +97,7 @@ namespace NativeBLE.Droid.Native
 
         public void RestartAdapter()
         {
-            BluetoothManager bluetoothManager = thisActivity.GetSystemService(Context.BluetoothService) as BluetoothManager;
-            var bluetoothAdapter = bluetoothManager.Adapter;
-
-            if (bluetoothAdapter != null)
-            {
-                if (!bluetoothAdapter.IsEnabled)
-                {
-                    logger.TraceInformation("Try to turn on the Bluetooth adapter");
-                    
-                    bluetoothAdapter.Enable();
-                } else
-                {
-                    logger.TraceInformation("Try to turn off the Bluetooth adapter");
-
-                    bluetoothAdapter.Disable();
-                    
-                    logger.TraceInformation("Try to turn on the Bluetooth adapter");
-
-                    bluetoothAdapter.Enable();
-                }
-            }
-            else
-            {
-                logger.TraceError("Bluetooth not supported.");
-            }
-
+            
         }
     }
 }
