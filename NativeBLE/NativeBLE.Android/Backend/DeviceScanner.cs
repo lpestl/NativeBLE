@@ -21,7 +21,7 @@ using Android.Bluetooth.LE;
 [assembly: Xamarin.Forms.Dependency(typeof(NativeBLE.Droid.Backend.DeviceScanner))]
 namespace NativeBLE.Droid.Backend
 {
-    class DeviceScanner : ScanCallback, IDeviceScanner, IOnRequestPermissionsResultCallback
+    class DeviceScanner : ScanCallback, IDeviceScanner
     {
         private Logger logger = new Logger();
 
@@ -35,7 +35,6 @@ namespace NativeBLE.Droid.Backend
         private static int REQUEST_ENABLE_BT = 1;
         // Stops scanning after 10 seconds.
         private static long SCAN_PERIOD = 20000;
-        private static int PERMISSION_REQUEST_COARSE_LOCATION = 0;
 
         private List<Device> devicesList = new List<Device>();
 
@@ -61,23 +60,7 @@ namespace NativeBLE.Droid.Backend
                 bluetoothAdapter.BluetoothLeScanner.StopScan(this);
             };
         }       
-
-        public bool CheckPermissions()
-        {
-            return (ActivityCompat.CheckSelfPermission(thisActivity, Manifest.Permission.AccessCoarseLocation) == Permission.Granted);
-            //|| (ActivityCompat.CheckSelfPermission(thisActivity, Manifest.Permission.AccessFineLocation) == Permission.Granted);
-        }
-
-        public bool CheckSupportBLE()
-        {
-            if (!thisActivity.PackageManager.HasSystemFeature(PackageManager.FeatureBluetoothLe))
-            {
-                logger.TraceError("BLE is not supported");
-                return false;
-            }
-            return true;
-        }
-
+        
         public void GetBluetoothAdapter()
         {
             logger.TraceInformation("Get bluetooth Adapter");
@@ -101,52 +84,7 @@ namespace NativeBLE.Droid.Backend
                 logger.TraceError("Bluetooth not supported.");
             }
         }
-
-        public void GetRuntimePermissions()
-        {
-            if (Build.VERSION.SdkInt >= BuildVersionCodes.M)
-            {
-                logger.TraceInformation("Build.VERSION.SdkInt >= API 23");
-                const string permission = Manifest.Permission.AccessCoarseLocation;
-                if (thisActivity.CheckSelfPermission(permission) != Permission.Granted)
-                {
-                    logger.TraceWarning("AccessCoarseLocation Permission is not granted");
-                    AlertDialog.Builder builder = new AlertDialog.Builder(thisActivity);
-                    builder.SetTitle("This app needs location access");
-                    builder.SetMessage("Please grant location access so this app can detect bluetooth devices.");
-                    builder.SetPositiveButton("OK", (senderAlert, args) => {
-                        logger.TraceInformation("Try get AccessCoarseLocation Permission");
-                        thisActivity.RequestPermissions(new String[] { Manifest.Permission.AccessCoarseLocation }, PERMISSION_REQUEST_COARSE_LOCATION);
-                    });
-                    builder.Show();
-                }
-            }
-            else
-            {
-                logger.TraceWarning("Build.VERSION.SdkInt < API 23");
-            }
-        }
-
-        public void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Permission[] grantResults)
-        {
-            if (requestCode == PERMISSION_REQUEST_COARSE_LOCATION)
-            {
-                if (grantResults[0] == Permission.Granted)
-                {
-                    logger.TraceInformation("coarse location permission granted");
-                }
-                else
-                {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(thisActivity);
-                    builder.SetTitle("Functionality limited");
-                    logger.TraceInformation("Since location access has not been granted, this app will not be able to discover beacons when in the background.");
-                    builder.SetMessage("Since location access has not been granted, this app will not be able to discover beacons when in the background.");
-                    builder.SetPositiveButton("OK", (senderAlert, args) => { });
-                    builder.Show();
-                }
-            }
-        }
-
+        
         public void ScanLeDevice()
         {
             if (bluetoothAdapter == null)
@@ -202,6 +140,11 @@ namespace NativeBLE.Droid.Backend
         public Device GetDevice(int value)
         {
             return devicesList[value];
+        }
+
+        ~DeviceScanner()
+        {
+            logger.TraceInformation("Destroy");
         }
     }
 }

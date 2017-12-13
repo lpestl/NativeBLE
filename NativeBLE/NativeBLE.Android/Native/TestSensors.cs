@@ -11,8 +11,10 @@ using Android.Views;
 using Android.Widget;
 using Java.Util;
 using NativeBLE.Droid.Native;
+using NativeBLE.Droid.Backend;
+using NativeBLE.Core;
 
-namespace NativeBLE.Droid.Backend
+namespace NativeBLE.Droid.Native
 {
     class TestSensors : Java.Lang.Object, IDialogInterfaceOnClickListener
     {
@@ -41,12 +43,14 @@ namespace NativeBLE.Droid.Backend
         private AlertDialog alertDialogSensorB;
 
         private Activity activity;
-        private SensorDataPage parent;
+        //private SensorDataPage parent;
+        SensorViewModel sensorViewModel;
 
-        public TestSensors(Activity _activity, SensorDataPage _parent)
+        public TestSensors(Activity _activity, /*SensorDataPage _parent*/SensorViewModel sensorView)
         {
             activity = _activity;
-            parent = _parent;
+            //parent = _parent;
+            sensorViewModel = sensorView;
             logger.TAG = "TestSensors";            
         }
 
@@ -69,7 +73,9 @@ namespace NativeBLE.Droid.Backend
             alertDialogSensorB.Show();
             lMovingAverage.Clear();
             result = 0;
-            parent.LogEcho("Moving Average Cleared");
+            
+            sensorViewModel.DebugString = "Moving Average Cleared";
+            logger.TraceInformation("Moving Average Cleared");
 
             var countTimer = new SensorCountDownTimer(4000, 1000, this);
             countTimer.Start();
@@ -214,7 +220,7 @@ namespace NativeBLE.Droid.Backend
                         parent.alertDialogSensorB.SetTitle("Keep on releasing pressure");
                         Arrays.Sort(measurement);
                         average_measurement[0, 0] = measurement[2];
-                        parent.parent.SensorView.SensorA_TopResult = average_measurement[0, 0].ToString();
+                        parent.sensorViewModel.SensorA_TopResult = average_measurement[0, 0].ToString();
                         parent.alertDialogSensorB.Dismiss();
                         parent.alertDialogSensorA.Show();
                         break;
@@ -224,7 +230,7 @@ namespace NativeBLE.Droid.Backend
                         parent.alertDialogSensorB.SetTitle("Keep on applying pressure");
                         Arrays.Sort(measurement);
                         average_measurement[1, 0] = measurement[2];
-                        parent.parent.SensorView.SensorA_BottomResult = average_measurement[1, 0].ToString();
+                        parent.sensorViewModel.SensorA_BottomResult = average_measurement[1, 0].ToString();
                         parent.alertDialogSensorB.Dismiss();
                         parent.alertDialogSensorA.Show();
                         break;
@@ -233,7 +239,7 @@ namespace NativeBLE.Droid.Backend
                         parent.alertDialogSensorB.SetTitle("Keep on releasing pressure");
                         Arrays.Sort(measurement);
                         average_measurement[0, 1] = measurement[2];
-                        parent.parent.SensorView.SensorB_TopResult = average_measurement[0, 1].ToString();
+                        parent.sensorViewModel.SensorB_TopResult = average_measurement[0, 1].ToString();
                         parent.alertDialogSensorB.Dismiss();
                         parent.alertDialogSensorA.Show();
                         break;
@@ -242,18 +248,18 @@ namespace NativeBLE.Droid.Backend
                         sensorSelector = false;
                         Arrays.Sort(measurement);
                         average_measurement[1, 1] = measurement[2];
-                        parent.parent.SensorView.SensorB_BottomResult = average_measurement[1, 1].ToString();
+                        parent.sensorViewModel.SensorB_BottomResult = average_measurement[1, 1].ToString();
                         if (parent.TestValidation() == true)
                         {
-                            parent.parent.SensorView.VisibleResult = true;
-                            parent.parent.SensorView.TextResult = "TEST PASSED!!!";
-                            parent.parent.SensorView.ColorResult = Xamarin.Forms.Color.Green;
+                            parent.sensorViewModel.VisibleResult = true;
+                            parent.sensorViewModel.TextResult = "TEST PASSED!!!";
+                            parent.sensorViewModel.ColorResult = Xamarin.Forms.Color.Green;
                         }
                         else
                         {
-                            parent.parent.SensorView.VisibleResult = true;
-                            parent.parent.SensorView.TextResult = "TEST FAILED";
-                            parent.parent.SensorView.ColorResult = Xamarin.Forms.Color.Red;
+                            parent.sensorViewModel.VisibleResult = true;
+                            parent.sensorViewModel.TextResult = "TEST FAILED";
+                            parent.sensorViewModel.ColorResult = Xamarin.Forms.Color.Red;
                         }
                         
                         parent.alertDialogSensorB.Dismiss();

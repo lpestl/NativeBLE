@@ -22,20 +22,20 @@ type SensorViewModel(device: DeviceViewModel) =
     // Result button
     let mutable mVisibleResultButton = false
     let mutable mTextResultButton = ""
-    let mutable mColorResultButton = Color.Gray
+    let mutable mColorResultButton = Xamarin.Forms.Color.Gray
     // Start button
     //let mutable mEnableStartButton = false
     let mutable mTextStartButton = "Disconnected"
-    let mutable mColorTextStartButton = Color.Black
+    let mutable mColorTextStartButton = Xamarin.Forms.Color.Black
 
     let mutable mSleeveModeText = "Sleeve mode (>800 release)"
     
-    let mutable mConnectionTimeString = String.Format("{0:00}.{1:000}", sensorData.ConnectionTimeSpan.Seconds, sensorData.ConnectionTimeSpan.Milliseconds)
-    let mutable mFirstDataTimeString = String.Format("{0:00}.{1:000}", sensorData.FirstDataTimeSpan.Seconds, sensorData.FirstDataTimeSpan.Milliseconds)
-    let mutable mDisconnectionTimeString = String.Format("{0:00}.{1:000}", sensorData.DisconnectionTimeSpan.Seconds, sensorData.DisconnectionTimeSpan.Milliseconds)
-    let mutable mConnectionTimeColor = Color.Green
-    let mutable mFirstDataTimeColor = Color.Green
-    let mutable mDisconnectionTimeColor = Color.Green
+    let mutable mConnectionTimeString = "00:000"
+    let mutable mFirstDataTimeString = "00:000"
+    let mutable mDisconnectionTimeString = "00:000"
+    let mutable mConnectionTimeColor = Xamarin.Forms.Color.Green
+    let mutable mFirstDataTimeColor = Xamarin.Forms.Color.Green
+    let mutable mDisconnectionTimeColor = Xamarin.Forms.Color.Green
 
 
     member x.Name with get() = deviceViewModel.Name
@@ -92,7 +92,7 @@ type SensorViewModel(device: DeviceViewModel) =
     member x.SetResult() =
         x.VisibleResult <- true
         x.TextResult <- "Test passed!"
-        x.ColorResult <- Color.Green
+        x.ColorResult <- Xamarin.Forms.Color.Green
 
     member x.VisibleResult 
         with get() = mVisibleResultButton
@@ -246,11 +246,11 @@ type SensorViewModel(device: DeviceViewModel) =
             sensorData.ConnectionTimeSpan <- value
             x.ConnectionTimeString <- String.Format("{0:00}.{1:000}", sensorData.ConnectionTimeSpan.Seconds, sensorData.ConnectionTimeSpan.Milliseconds)
             if sensorData.ConnectionTimeSpan.Seconds < 3 then
-                x.ConnectionTimeColor <- Color.Green
+                x.ConnectionTimeColor <- Xamarin.Forms.Color.Green
             elif sensorData.ConnectionTimeSpan.Seconds < 9 then
-                x.ConnectionTimeColor <- Color.Orange
+                x.ConnectionTimeColor <- Xamarin.Forms.Color.Orange
             else 
-                x.ConnectionTimeColor <- Color.Red
+                x.ConnectionTimeColor <- Xamarin.Forms.Color.Red
             base.OnPropertyChanged <@ x.ConnectionTimeSpan @>
 
      member x.FirstDataTimeSpan
@@ -259,11 +259,11 @@ type SensorViewModel(device: DeviceViewModel) =
             sensorData.FirstDataTimeSpan <- value
             x.FirstDataTimeString <- String.Format("{0:00}.{1:000}", sensorData.FirstDataTimeSpan.Seconds, sensorData.FirstDataTimeSpan.Milliseconds)
             if sensorData.FirstDataTimeSpan.Seconds < 3 then
-                x.FirstDataTimeColor <- Color.Green
+                x.FirstDataTimeColor <- Xamarin.Forms.Color.Green
             elif sensorData.FirstDataTimeSpan.Seconds < 9 then
-                x.FirstDataTimeColor <- Color.Orange
+                x.FirstDataTimeColor <- Xamarin.Forms.Color.Orange
             else 
-                x.FirstDataTimeColor <- Color.Red
+                x.FirstDataTimeColor <- Xamarin.Forms.Color.Red
             base.OnPropertyChanged <@ x.FirstDataTimeSpan @>
 
      member x.DisconnectionTimeSpan
@@ -272,9 +272,9 @@ type SensorViewModel(device: DeviceViewModel) =
             sensorData.DisconnectionTimeSpan <- value
             x.DisconnectionTimeString <- String.Format("{0:00}.{1:000}", sensorData.DisconnectionTimeSpan.Seconds, sensorData.DisconnectionTimeSpan.Milliseconds)
             if sensorData.DisconnectionTimeSpan.Seconds < 3 then
-                x.DisconnectionTimeColor <- Color.Green
+                x.DisconnectionTimeColor <- Xamarin.Forms.Color.Green
             elif sensorData.DisconnectionTimeSpan.Seconds < 9 then
-                x.DisconnectionTimeColor <- Color.Orange
+                x.DisconnectionTimeColor <- Xamarin.Forms.Color.Orange
             else 
-                x.DisconnectionTimeColor <- Color.Red
+                x.DisconnectionTimeColor <- Xamarin.Forms.Color.Red
             base.OnPropertyChanged <@ x.DisconnectionTimeSpan @>

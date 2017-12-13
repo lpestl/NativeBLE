@@ -12,6 +12,7 @@ using Android.Widget;
 using Android.Bluetooth;
 using NativeBLE.Droid.Native;
 using System.Threading;
+using System.Diagnostics;
 
 namespace NativeBLE.Droid.Backend
 {

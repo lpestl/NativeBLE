@@ -30,7 +30,8 @@
                 </ListView.ItemTemplate>
             </ListView>
             <ActivityIndicator IsRunning="{Binding Scanning}" Color="Blue"/>
-            <Label Text="{Binding StringDebug}" FontSize="Small" TextColor="Orange" />
+            <Label Text="{Binding StringDebug}" FontSize="Small" />
+            <Picker x:Name="ModeBlePicker" IsVisible="False" Title="Scan Mode:" />
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

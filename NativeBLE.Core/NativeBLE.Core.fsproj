@@ -47,13 +47,16 @@
   <ItemGroup>
     <Compile Include="AssemblyInfo.fs" />
     <Compile Include="ILogger.fs" />
+    <Compile Include="IPermissionsCheck.fs" />
     <Compile Include="D:\Work\vs\NativeBLE\NativeBLE.Core\BaseTypes.fs" />
     <Compile Include="Device.fs" />
     <Compile Include="MainPageViewModel.fs" />
     <Compile Include="IDeviceScanner.fs" />
+    <Compile Include="IPluginDeviceScanner.fs" />
     <Compile Include="SensorData.fs" />
     <Compile Include="SensorViewModel.fs" />
     <Compile Include="ISensorData.fs" />
+    <Compile Include="IPluginSensorData.fs" />
     <None Include="Script.fsx" />
     <Content Include="packages.config" />
     <Compile Include="ConnectionAlgorithm.fs" />
@@ -61,6 +64,12 @@
   <ItemGroup>
     <Reference Include="FSharp.Core">
       <HintPath>..\packages\FSharp.Core.4.1.18\lib\portable-net45+netcore45\FSharp.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Plugin.BLE">
+      <HintPath>..\packages\Plugin.BLE.1.3.0\lib\portable-net45+win8+wpa81+wp8\Plugin.BLE.dll</HintPath>
+    </Reference>
+    <Reference Include="Plugin.BLE.Abstractions">
+      <HintPath>..\packages\Plugin.BLE.1.3.0\lib\portable-net45+win8+wpa81+wp8\Plugin.BLE.Abstractions.dll</HintPath>
     </Reference>
     <Reference Include="System.ValueTuple">
       <HintPath>..\packages\System.ValueTuple.4.3.1\lib\portable-net40+sl4+win8+wp8\System.ValueTuple.dll</HintPath>

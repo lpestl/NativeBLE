@@ -62,7 +62,7 @@ namespace NativeBLE.Droid.Backend
             currentDevice = device;
 
             thisActivity = Xamarin.Forms.Forms.Context as Activity;
-            test = new TestSensors(thisActivity, this);
+            test = new TestSensors(thisActivity, SensorView);
 
             dataBroadcastReceiver = new DataBroadcastReceiver();
             dataBroadcastReceiver.SetParent(this);
